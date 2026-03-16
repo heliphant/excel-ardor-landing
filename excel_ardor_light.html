@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Ardor | Precision Defense Engineering</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0052cc',
+                            light: '#e6f0ff',
+                            dark: '#002966',
+                            gold: '#d4af37',
+                            slate: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Barlow Condensed', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'hover': '0 20px 40px -5px rgba(0, 82, 204, 0.15)'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #ffffff; 
+            color: #334155; 
+            overflow-x: hidden; 
+        }
+        
+        h1, h2, h3, h4, h5, .font-heading { 
+            font-family: 'Barlow Condensed', sans-serif; 
+            text-transform: uppercase; 
+        }
+        
+        /* Glassmorphism Navbar */
+        .glass-nav { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(16px); 
+            border-bottom: 1px solid rgba(0,0,0,0.06); 
+        }
+        
+        /* Hero Background with subtle mesh gradient */
+        .hero-bg {
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(at 90% 10%, rgba(0, 82, 204, 0.06) 0px, transparent 40%),
+                radial-gradient(at 10% 90%, rgba(212, 175, 55, 0.05) 0px, transparent 40%),
+                radial-gradient(at 50% 50%, rgba(230, 240, 255, 0.5) 0px, transparent 60%);
+        }
+        
+        /* Card Interactions */
+        .interactive-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.04);
+            background: #ffffff;
+        }
+        .interactive-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -5px rgba(0, 82, 204, 0.12);
+            border-color: rgba(0, 82, 204, 0.2);
+        }
+
+        /* Continuous Marquee */
+        .marquee-wrapper {
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-wrapper::before, .marquee-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; width: 120px; z-index: 2;
+        }
+        .marquee-wrapper::before { left: 0; background: linear-gradient(to right, #ffffff, transparent); }
+        .marquee-wrapper::after { right: 0; background: linear-gradient(to left, #ffffff, transparent); }
+        
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+        .marquee-wrapper:hover .marquee-content { animation-play-state: paused; }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Floating Animation for Hero Graphic */
+        .floating { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Custom Clip Path Section */
+        .bg-slant {
+            position: relative;
+        }
+        .bg-slant::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #f8fafc;
+            transform: skewY(-2deg);
+            transform-origin: 0;
+            z-index: -1;
+        }
+
+        /* SVG Blueprint Grid */
+        .bg-grid {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Technical Diagram Styling */
+        .mast-tech-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.06);
+        }
+        
+        .mast-grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .tech-badge {
+            font-family: 'Barlow Condensed', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            color: #475569;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-blue selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="glass-nav fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-heading font-extrabold tracking-wide text-brand-dark">
+                EXCEL <span class="text-brand-blue">ARDOR</span>
+            </div>
+            <ul class="hidden md:flex gap-8 font-medium text-sm tracking-wide text-slate-600">
+                <li><a href="#about" class="hover:text-brand-blue transition-colors uppercase">About Us</a></li>
+                <li><a href="#products" class="hover:text-brand-blue transition-colors uppercase">Products</a></li>
+                <li><a href="#capabilities" class="hover:text-brand-blue transition-colors uppercase">Capabilities</a></li>
+                <li><a href="#clients" class="hover:text-brand-blue transition-colors uppercase">Clients</a></li>
+            </ul>
+            <a href="#contact" class="hidden md:block bg-brand-blue text-white px-6 py-2.5 rounded-md text-sm font-semibold tracking-wide hover:bg-brand-dark transition-colors shadow-lg shadow-brand-blue/30">
+                ENQUIRE NOW
+            </a>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-brand-dark p-2 focus:outline-none">
+                <i class="ph-bold ph-list text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col pt-24 px-6 gap-6">
+            <a href="#about" class="text-xl font-heading font-bold text-slate-800 border-b border-slate-100 pb-2" onclick="closeMobileMenu()">About Us</a>
+            <a href="#products" class="text-xl font-heading font-bold text-slate-800 border-b border-slate-100 pb-2" onclick="closeMobileMenu()">Products</a>
+            <a href="#capabilities" class="text-xl font-heading font-bold text-slate-800 border-b border-slate-100 pb-2" onclick="closeMobileMenu()">Capabilities</a>
+            <a href="#clients" class="text-xl font-heading font-bold text-slate-800 border-b border-slate-100 pb-2" onclick="closeMobileMenu()">Clients</a>
+            <a href="#contact" class="bg-brand-blue text-white px-6 py-3 rounded-md text-center font-bold shadow-lg shadow-brand-blue/30 mt-4" onclick="closeMobileMenu()">ENQUIRE NOW</a>
+            
+            <button class="absolute top-6 right-6 text-slate-400 hover:text-red-500" onclick="closeMobileMenu()">
+                <i class="ph-bold ph-x text-2xl"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if(mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.remove('translate-x-full');
+            });
+        }
+        
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if(menu) menu.classList.add('translate-x-full');
+        }
+    </script>
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden border-b border-slate-100">
+        <div class="bg-grid absolute inset-0 opacity-40"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+            
+            <div class="hero-text-content">
+                <div class="hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-blue/30 bg-brand-blue/5 text-brand-blue text-xs font-bold tracking-widest mb-6 uppercase">
+                    <i class="ph-fill ph-shield-check"></i> India's Defense Engineering Pioneer
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl lg:text-7xl font-heading font-black leading-[1.05] text-slate-900 mb-6 tracking-tight">
+                    <div class="overflow-hidden"><span class="block">PRECISION ENGINEERED</span></div>
+                    <div class="overflow-hidden"><span class="block">FOR INDIA's MOST</span></div>
+                    <div class="overflow-hidden"><span class="block text-brand-blue">CRITICAL MISSIONS.</span></div>
+                </h1>
+                
+                <p class="hero-desc text-base md:text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
+                    Trusted by DRDO, BEL, and the Indian Navy. We deliver patented, heavy-duty telescopic masts and aerospace components manufactured to exact defense specifications.
+                </p>
+                
+                <div class="hero-btns flex flex-wrap gap-4">
+                    <a href="#products" class="bg-brand-blue text-white px-8 py-3.5 rounded-lg font-semibold shadow-xl shadow-brand-blue/25 hover:-translate-y-1 transition-transform flex items-center gap-2">
+                        Explore Products <i class="ph-bold ph-arrow-right"></i>
+                    </a>
+                    <a href="#about" class="bg-white text-slate-700 border border-slate-200 px-8 py-3.5 rounded-lg font-semibold hover:border-brand-blue hover:text-brand-blue transition-colors">
+                        Learn Our History
+                    </a>
+                </div>
+
+                <div class="hero-stats mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-slate-200/60 text-center sm:text-left">
+                    <div>
+                        <div class="text-3xl font-heading font-bold text-brand-dark">130+</div>
+                        <div class="text-xs text-slate-500 font-medium tracking-wide uppercase mt-1">Defense Clients</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-heading font-bold text-brand-blue">70+</div>
+                        <div class="text-xs text-slate-500 font-medium tracking-wide uppercase mt-1">Mast Variants</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-heading font-bold text-brand-gold">Patented</div>
+                        <div class="text-xs text-slate-500 font-medium tracking-wide uppercase mt-1">Hydraulic Masts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Graphic (Technical Mast Diagram) -->
+            <div class="hero-graphic relative mt-12 lg:mt-0">
+                <!-- 3D/Tech Glow Background -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-brand-blue/10 to-brand-gold/10 rounded-3xl blur-3xl -z-10 animate-pulse"></div>
+                
+                <div class="mast-tech-card p-0 h-[450px] lg:h-[550px] flex flex-col relative overflow-hidden bg-slate-50/50 backdrop-blur-sm border-slate-200">
+                    
+                    <!-- Tech Overlay UI -->
+                    <div class="absolute top-0 left-0 w-full p-4 lg:p-6 z-20 flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-red-500 animate-ping"></div>
+                                <div class="font-heading font-black text-xl lg:text-3xl text-slate-800 tracking-tighter">SERIES <span class="text-brand-blue">X-TEND</span></div>
+                            </div>
+                            <div class="flex items-center gap-3 mt-2">
+                                <div class="px-2 py-0.5 bg-slate-200 text-slate-600 text-[10px] font-mono rounded font-bold">HYDRAULIC ACTUATION</div>
+                                <div class="px-2 py-0.5 bg-blue-100/50 text-blue-700 text-[10px] font-mono rounded font-bold">MIL-STD-810G</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-mono text-xs text-slate-400">EXT. HEIGHT</div>
+                            <div class="font-heading font-bold text-2xl text-slate-700" id="height-display">0.0m</div>
+                        </div>
+                    </div>
+
+                    <!-- Side Stats -->
+                    <div class="absolute right-6 top-24 flex flex-col gap-4 z-20 hidden xl:flex">
+                        
+                        <!-- Erected Height -->
+                        <div class="text-right group cursor-pointer">
+                            <div class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-1">Erected Height</div>
+                            <div class="flex justify-end items-center gap-2">
+                                <span class="text-lg font-bold text-slate-700">15m</span>
+                                <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-blue"><i class="ph ph-arrows-out-line-vertical"></i></div>
+                            </div>
+                        </div>
+
+                        <!-- Retracted Height -->
+                        <div class="text-right group cursor-pointer">
+                            <div class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-1">Retracted Height</div>
+                            <div class="flex justify-end items-center gap-2">
+                                <span class="text-lg font-bold text-slate-700">3.2m</span>
+                                <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-blue"><i class="ph ph-arrows-in-line-vertical"></i></div>
+                            </div>
+                        </div>
+
+                        <!-- Head Load -->
+                        <div class="text-right group cursor-pointer">
+                            <div class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-1">Head Load</div>
+                            <div class="flex justify-end items-center gap-2">
+                                <span class="text-lg font-bold text-slate-700">30kg</span>
+                                <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-gold"><i class="ph ph-weight"></i></div>
+                            </div>
+                        </div>
+
+                        <!-- Total Weight -->
+                        <div class="text-right group cursor-pointer">
+                            <div class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-1">Total Weight</div>
+                            <div class="flex justify-end items-center gap-2">
+                                <span class="text-lg font-bold text-slate-700">220kgs</span>
+                                <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-dark"><i class="ph ph-scales"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main 3D SVG Display -->
+                    <div class="flex-1 relative w-full h-full flex items-end justify-center pb-8 z-10">
+                        <svg id="mast-svg" viewBox="0 0 400 600" class="h-full w-auto filter drop-shadow-2xl" preserveAspectRatio="xMidYMax meet">
+                            <defs>
+                                <!-- Advanced Brushed Metal Gradient -->
+                                <linearGradient id="cylinder-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#334155" /> <!-- Shadow edge -->
+                                    <stop offset="10%" stop-color="#64748b" />
+                                    <stop offset="25%" stop-color="#cbd5e1" />
+                                    <stop offset="45%" stop-color="#f8fafc" /> <!-- Highlight -->
+                                    <stop offset="50%" stop-color="#ffffff" /> <!-- Specular -->
+                                    <stop offset="55%" stop-color="#f1f5f9" />
+                                    <stop offset="75%" stop-color="#94a3b8" />
+                                    <stop offset="90%" stop-color="#475569" />
+                                    <stop offset="100%" stop-color="#1e293b" /> <!-- Shadow edge -->
+                                </linearGradient>
+
+                                <!-- Tactical Dark Matte (Collars/Joints) -->
+                                <linearGradient id="tactical-black" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#0f172a" />
+                                    <stop offset="40%" stop-color="#334155" />
+                                    <stop offset="60%" stop-color="#1e293b" />
+                                    <stop offset="100%" stop-color="#020617" />
+                                </linearGradient>
+
+                                <!-- Base Plate Gradient -->
+                                <linearGradient id="base-grad-3d" x1="0%" y1="0%" x2="100%" y2="10%">
+                                    <stop offset="0%" stop-color="#1e293b" />
+                                    <stop offset="50%" stop-color="#475569" />
+                                    <stop offset="100%" stop-color="#0f172a" />
+                                </linearGradient>
+                                
+                                <!-- Sensor Lens Glint -->
+                                <radialGradient id="sensor-lens" cx="30%" cy="30%" r="70%">
+                                    <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.9" /> <!-- Blue reflection -->
+                                    <stop offset="40%" stop-color="#1d4ed8" stop-opacity="0.8" />
+                                    <stop offset="100%" stop-color="#172554" /> <!-- Dark glass -->
+                                </radialGradient>
+                                
+                                <!-- Warning Striping Pattern -->
+                                <pattern id="warning-stripes" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                                    <rect x="0" y="0" width="5" height="10" fill="#fbbf24" />
+                                    <rect x="5" y="0" width="5" height="10" fill="#000000" />
+                                </pattern>
+                            </defs>
+
+                            <!-- Floor Grid Perspective -->
+                            <g transform="translate(200, 480) scale(1, 0.3)">
+                                <circle cx="0" cy="0" r="160" fill="none" stroke="#e2e8f0" stroke-width="1" opacity="0.4" />
+                                <circle cx="0" cy="0" r="120" fill="none" stroke="#cbd5e1" stroke-width="1" opacity="0.6" />
+                                <path d="M-180 0 L180 0 M0 -180 L0 180" stroke="#e2e8f0" stroke-width="1" opacity="0.3" />
+                                <!-- Drop Shadow Blob -->
+                                <ellipse cx="0" cy="0" rx="60" ry="20" fill="#000000" opacity="0.2" filter="blur(8px)" />
+                            </g>
+
+                            <!-- MAST ASSEMBLY (Centered) -->
+                            <g id="mast-assembly" transform="translate(200, 480)">
+                                
+                                <!-- BASE UNIT (Improved) -->
+                                <g id="base-unit">
+                                    <!-- Mounting Feet -->
+                                    <path d="M-70 0 L70 0 L80 15 L-80 15 Z" fill="#334155" />
+                                    <rect x="-75" y="5" width="10" height="5" rx="1" fill="#cbd5e1" /> <!-- Bolt -->
+                                    <rect x="65" y="5" width="10" height="5" rx="1" fill="#cbd5e1" /> <!-- Bolt -->
+                                    
+                                    <!-- Main Housing -->
+                                    <path d="M-55 -90 L-55 0 L55 0 L55 -90 Z" fill="url(#base-grad-3d)" />
+                                    <!-- Vertical Ridges for rugged look -->
+                                    <rect x="-45" y="-80" width="10" height="70" fill="rgba(0,0,0,0.2)" />
+                                    <rect x="35" y="-80" width="10" height="70" fill="rgba(0,0,0,0.2)" />
+                                    
+                                    <!-- Top Rim -->
+                                    <ellipse cx="0" cy="-90" rx="55" ry="12" fill="url(#tactical-black)" stroke="#334155" stroke-width="0.5" />
+                                    <text x="0" y="-35" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif" letter-spacing="1">SERIES-H</text>
+                                </g>
+
+                                <!-- TELESCOPIC STAGES -->
+                                
+                                <!-- STAGE 1 (Bottom Stage) -->
+                                <g id="stage-1" transform="translate(0, -90)">
+                                    <!-- Tube Body -->
+                                    <path d="M-45 -130 L-45 15 L45 15 L45 -130 Z" fill="url(#cylinder-grad)" />
+                                    <!-- Vertical Seam/Detail line -->
+                                    <line x1="20" y1="-120" x2="20" y2="10" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                                    
+                                    <!-- Locking Collar 1 -->
+                                    <g transform="translate(0, -130)">
+                                        <path d="M-48 0 L-48 15 L48 15 L48 0 Z" fill="url(#tactical-black)" />
+                                        <ellipse cx="0" cy="15" rx="48" ry="10" fill="url(#tactical-black)" />
+                                        <ellipse cx="0" cy="0" rx="48" ry="10" fill="url(#tactical-black)" stroke="#64748b" stroke-width="0.5" />
+                                        <!-- Locking Bolts -->
+                                        <circle cx="-35" cy="8" r="2" fill="#94a3b8" />
+                                        <circle cx="0" cy="12" r="2" fill="#94a3b8" />
+                                        <circle cx="35" cy="8" r="2" fill="#94a3b8" />
+                                        <!-- Top Cap/Hole -->
+                                        <ellipse cx="0" cy="0" rx="45" ry="9" fill="#1e293b" />
+                                    </g>
+
+                                    <!-- STAGE 2 (Middle Stage) -->
+                                    <g id="stage-2" transform="translate(0, -130)">
+                                        <!-- Tube Body -->
+                                        <path d="M-35 -120 L-35 15 L35 15 L35 -120 Z" fill="url(#cylinder-grad)" />
+                                        
+                                        <!-- Locking Collar 2 -->
+                                        <g transform="translate(0, -120)">
+                                            <path d="M-38 0 L-38 12 L38 12 L38 0 Z" fill="url(#tactical-black)" />
+                                            <ellipse cx="0" cy="12" rx="38" ry="8" fill="url(#tactical-black)" />
+                                            <ellipse cx="0" cy="0" rx="38" ry="8" fill="url(#tactical-black)" stroke="#64748b" stroke-width="0.5" />
+                                            <!-- Details -->
+                                            <rect x="-10" y="4" width="20" height="4" fill="#64748b" rx="1" />
+                                            <!-- Top Cap/Hole -->
+                                            <ellipse cx="0" cy="0" rx="35" ry="7" fill="#1e293b" />
+                                        </g>
+
+                                        <!-- STAGE 3 (Top Stage) -->
+                                        <g id="stage-3" transform="translate(0, -120)">
+                                            <!-- Tube Body -->
+                                            <path d="M-25 -100 L-25 10 L25 10 L25 -100 Z" fill="url(#cylinder-grad)" />
+                                            <!-- Caution Label -->
+                                            <rect x="-10" y="-80" width="20" height="40" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="1" />
+                                            <text x="0" y="-60" text-anchor="middle" font-size="5" fill="#64748b" transform="rotate(-90 0 -60)">CAUTION</text>
+                                            
+                                            <!-- Top Collar -->
+                                            <g transform="translate(0, -100)">
+                                                <path d="M-28 0 L-28 10 L28 10 L28 0 Z" fill="url(#tactical-black)" />
+                                                <ellipse cx="0" cy="10" rx="28" ry="6" fill="url(#tactical-black)" />
+                                                <ellipse cx="0" cy="0" rx="28" ry="6" fill="#cbd5e1" stroke="#64748b" stroke-width="0.5" />
+                                            </g>
+
+                                            <!-- PAYLOAD: High-Tech Sensor Module (Fixed) -->
+                                            <g id="payload-group" transform="translate(0, -110)">
+                                                <!-- Neck -->
+                                                <rect x="-10" y="0" width="20" height="10" fill="#334155" />
+                                                <!-- The Block -->
+                                                <g transform="translate(0, -30)">
+                                                    <!-- Isometric Block -->
+                                                    <!-- Front Face -->
+                                                    <rect x="-30" y="0" width="60" height="30" fill="#475569" stroke="#1e293b" stroke-width="1" />
+                                                    <!-- Top Face -->
+                                                    <path d="M-30 0 L-10 -15 L50 -15 L30 0 Z" fill="#94a3b8" stroke="#1e293b" stroke-width="1" />
+                                                    <!-- Side Face -->
+                                                    <path d="M30 0 L50 -15 L50 15 L30 30 Z" fill="#334155" stroke="#1e293b" stroke-width="1" />
+                                                    <!-- Text label for load -->
+                                                    <text x="0" y="20" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="10" fill="rgba(255,255,255,0.7)">30 KG</text>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Interactive Controls Panel -->
+                    <div class="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 transition-transform duration-300">
+                        <div class="flex items-center gap-4">
+                            <!-- Play/Pause Button -->
+                            <button id="anim-toggle" class="w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center shadow-lg hover:bg-brand-dark transition-colors focus:outline-none">
+                                <i id="anim-icon" class="ph-fill ph-pause"></i>
+                            </button>
+                            
+                            <!-- Progress Slider -->
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Deployment Sequence</span>
+                                    <span class="text-[10px] font-mono text-brand-blue font-bold" id="progress-text">0%</span>
+                                </div>
+                                <input type="range" id="anim-slider" min="0" max="100" value="0" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-blue hover:bg-slate-300 transition-colors">
+                            </div>
+
+                            <!-- Speed Control (Hidden on small screens) -->
+                            <div class="hidden sm:flex items-center gap-2">
+                                <button class="text-xs font-bold text-slate-400 hover:text-brand-blue px-2 py-1 rounded bg-slate-100 hover:bg-blue-50 transition-colors" onclick="tl.timeScale(0.5)">0.5x</button>
+                                <button class="text-xs font-bold text-white px-2 py-1 rounded bg-brand-blue shadow-sm" onclick="tl.timeScale(1)">1x</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Clients Section -->
+    <section class="py-10 border-b border-slate-100 bg-white" id="clients">
+        <div class="max-w-7xl mx-auto px-6 mb-4 flex justify-between items-center">
+            <p class="text-xs font-bold text-slate-400 tracking-widest uppercase">Trusted by India's Elite Organizations</p>
+        </div>
+        <div class="marquee-wrapper w-full">
+            <div class="marquee-content flex gap-12 px-6 items-center">
+                <!-- Logos text representation -->
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-shield-star text-3xl text-brand-blue"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">DRDO</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Ministry of Defence</p></div>
+                </div>
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-anchor text-3xl text-brand-dark"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">Indian Navy</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Naval Dockyard</p></div>
+                </div>
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-atom text-3xl text-brand-blue"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">NFC</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Dept of Atomic Energy</p></div>
+                </div>
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-radar text-3xl text-brand-dark"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">BEL</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Bharat Electronics</p></div>
+                </div>
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-cpu text-3xl text-brand-blue"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">ECIL</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Electronics Corp</p></div>
+                </div>
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-rocket-launch text-3xl text-brand-dark"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">Astra Rafael</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Comsys Pvt Ltd</p></div>
+                </div>
+                
+                <!-- Duplicate for seamless loop -->
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-shield-star text-3xl text-brand-blue"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">DRDO</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Ministry of Defence</p></div>
+                </div>
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-anchor text-3xl text-brand-dark"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">Indian Navy</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Naval Dockyard</p></div>
+                </div>
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-atom text-3xl text-brand-blue"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">NFC</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Dept of Atomic Energy</p></div>
+                </div>
+                <div class="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+                    <i class="ph-fill ph-radar text-3xl text-brand-dark"></i>
+                    <div><h4 class="font-bold text-slate-800 leading-tight">BEL</h4><p class="text-[10px] text-slate-500 uppercase tracking-wide">Bharat Electronics</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-24 bg-white" id="about">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            <div class="gsap-fade-up">
+                <div class="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold tracking-widest mb-4 uppercase">Corporate Overview</div>
+                <h2 class="text-4xl md:text-5xl font-heading font-black text-slate-900 mb-6">
+                    ENGINEERED FOR INDIA'S <span class="text-brand-blue">FUTURE.</span>
+                </h2>
+                <div class="w-16 h-1.5 bg-brand-blue mb-6"></div>
+                <p class="text-slate-600 leading-relaxed mb-6">
+                    Incorporated in Hyderabad in 2014, Excel Ardor Private Limited is one of India's premier manufacturers of advanced Telescopic Masts and precision defense engineering solutions. 
+                </p>
+                <p class="text-slate-600 leading-relaxed mb-8">
+                    From pneumatic and heavy-duty hydraulic masts to aerospace pyro components, every product is designed, rigorously tested, and manufactured in-house across our three specialized facilities to meet stringent military standards.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <i class="ph-fill ph-certificate text-2xl text-brand-gold mb-2"></i>
+                        <h4 class="font-bold text-slate-800 text-sm">Govt. Patent</h4>
+                        <p class="text-xs text-slate-500 mt-1">No. 373182 - Hyd. Mast</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <i class="ph-fill ph-check-circle text-2xl text-brand-blue mb-2"></i>
+                        <h4 class="font-bold text-slate-800 text-sm">ISO 9001:2015</h4>
+                        <p class="text-xs text-slate-500 mt-1">Design & Mfg Certified</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <i class="ph-fill ph-medal text-2xl text-brand-dark mb-2"></i>
+                        <h4 class="font-bold text-slate-800 text-sm">MSME ZED Gold</h4>
+                        <p class="text-xs text-slate-500 mt-1">Zero Defect Certified</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative gsap-fade-up border border-slate-200 rounded-2xl p-8 bg-slate-50 shadow-soft">
+                <h3 class="font-heading text-2xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-4">Our Innovation Timeline</h3>
+                
+                <div class="relative pl-6 border-l-2 border-brand-light space-y-8">
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-brand-blue border-4 border-white"></div>
+                        <div class="text-sm font-bold text-brand-blue tracking-wider mb-1">SEPTEMBER 2014</div>
+                        <h4 class="font-bold text-slate-800">Company Inception</h4>
+                        <p class="text-sm text-slate-600 mt-1">Incorporated under Companies Act 2013, Hyderabad.</p>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-brand-gold border-4 border-white"></div>
+                        <div class="text-sm font-bold text-brand-gold tracking-wider mb-1">2014 FILING</div>
+                        <h4 class="font-bold text-slate-800">Patent Application</h4>
+                        <p class="text-sm text-slate-600 mt-1">Internal Hydraulic Telescopic Mast innovation filed.</p>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-brand-dark border-4 border-white"></div>
+                        <div class="text-sm font-bold text-brand-dark tracking-wider mb-1">JULY 2021</div>
+                        <h4 class="font-bold text-slate-800">Patent Granted</h4>
+                        <p class="text-sm text-slate-600 mt-1">20-year exclusive patent awarded by the Govt. of India.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="py-24 bg-slate-50 bg-slant" id="products">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-16 gsap-fade-up">
+                <div class="inline-block px-3 py-1 rounded-full bg-brand-blue/10 text-brand-blue text-xs font-bold tracking-widest mb-4 uppercase">Our Portfolio</div>
+                <h2 class="text-4xl md:text-5xl font-heading font-black text-slate-900 mb-4">
+                    MAST SYSTEMS & <span class="text-brand-blue">COMPONENTS</span>
+                </h2>
+                <p class="text-slate-600 leading-relaxed">
+                    From lightweight field-deployable masts to heavy-duty defense-grade systems engineered for extreme environments.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up">
+                    <div class="w-14 h-14 rounded-xl bg-brand-light flex items-center justify-center text-brand-blue text-3xl mb-6">
+                        <i class="ph-fill ph-wind"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Pneumatic Telescopic Masts</h3>
+                    <p class="text-sm text-slate-600 mb-6 h-16">Air-pressure operated masts for rapid field deployment. Ideal for mobile communications and surveillance.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">Up to 15.8m</span>
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">50kg Load</span>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up relative overflow-hidden border-brand-gold/30 shadow-soft" style="border-width: 2px;">
+                    <div class="absolute -right-6 -top-6 w-24 h-24 bg-brand-gold/10 rounded-full blur-xl"></div>
+                    <div class="absolute top-4 right-4 bg-brand-gold text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">PATENTED</div>
+                    
+                    <div class="w-14 h-14 rounded-xl bg-brand-gold/20 flex items-center justify-center text-brand-gold text-3xl mb-6">
+                        <i class="ph-fill ph-drop"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Hydraulic Telescopic Masts</h3>
+                    <p class="text-sm text-slate-600 mb-6 h-16">Exclusive internal hydraulic design (Patent 373182) offering exceptional load capacity for demanding setups.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded bg-brand-gold/10 text-brand-gold text-[11px] font-semibold tracking-wide border border-brand-gold/20">500kg Load</span>
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">Heavy Duty</span>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up">
+                    <div class="w-14 h-14 rounded-xl bg-brand-light flex items-center justify-center text-brand-blue text-3xl mb-6">
+                        <i class="ph-fill ph-gear"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Electromechanical Masts</h3>
+                    <p class="text-sm text-slate-600 mb-6 h-16">Screw or rope drive motor-operated masts for radar, communications, and prolonged elevated deployment.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">Up to 15m</span>
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">250kg Load</span>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up">
+                    <div class="w-14 h-14 rounded-xl bg-brand-light flex items-center justify-center text-brand-blue text-3xl mb-6">
+                        <i class="ph-fill ph-jeep"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Vehicle Mounted Masts</h3>
+                    <p class="text-sm text-slate-600 mb-6 h-16">Lightweight systems engineered for vehicle integration enabling mobile rapid-response operations.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">Mobile Setup</span>
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">All-Terrain</span>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up">
+                    <div class="w-14 h-14 rounded-xl bg-brand-light flex items-center justify-center text-brand-blue text-3xl mb-6">
+                        <i class="ph-fill ph-rocket-launch"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Aerospace Pyro Components</h3>
+                    <p class="text-sm text-slate-600 mb-6 h-16">Precision manufactured pyrotechnic and aerospace components to exact specifications for DRDO programs.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">Aerospace Grade</span>
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">DRDO Approved</span>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up">
+                    <div class="w-14 h-14 rounded-xl bg-brand-light flex items-center justify-center text-brand-blue text-3xl mb-6">
+                        <i class="ph-fill ph-factory"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Hydraulic Cylinders</h3>
+                    <p class="text-sm text-slate-600 mb-6 h-16">Complete power pack assemblies and cylinders tested to 450 BAR for rigorous defense applications.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">450 BAR Tested</span>
+                        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide">Custom Builds</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Manufacturing Capabilities -->
+    <section class="py-24 bg-white" id="capabilities">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16">
+            <div class="lg:col-span-5 gsap-fade-up">
+                <div class="sticky top-32">
+                    <div class="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold tracking-widest mb-4 uppercase">Infrastructure</div>
+                    <h2 class="text-4xl md:text-5xl font-heading font-black text-slate-900 mb-6">
+                        PRECISION AT <span class="text-brand-blue">EVERY SCALE.</span>
+                    </h2>
+                    <p class="text-slate-600 leading-relaxed mb-8">
+                        Our 3 manufacturing units across Hyderabad house advanced CNC machinery, specialized honing equipment, and rigorous testing rigs. We control the entire production lifecycle to ensure zero compromises on defense-grade quality.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100 hover:border-brand-blue/30 transition-colors">
+                            <div class="mt-1 text-brand-blue"><i class="ph-fill ph-check-circle text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">CNC Precision Machining</h4>
+                                <p class="text-sm text-slate-500 mt-1">5 CNC Lathes & 2 CNC Milling machines delivering micron-level tolerances.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100 hover:border-brand-blue/30 transition-colors">
+                            <div class="mt-1 text-brand-blue"><i class="ph-fill ph-check-circle text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">Advanced Honing (Up to 6m)</h4>
+                                <p class="text-sm text-slate-500 mt-1">Perfect bore finishing on all mast cylinders and hydraulic components.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100 hover:border-brand-blue/30 transition-colors">
+                            <div class="mt-1 text-brand-blue"><i class="ph-fill ph-check-circle text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">450 BAR Hydraulic Testing</h4>
+                                <p class="text-sm text-slate-500 mt-1">In-house test rigs validate every mast under extreme pressure.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-7 gsap-fade-up">
+                <div class="bg-slate-900 rounded-2xl p-8 shadow-xl text-white relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=')]"></div>
+                    
+                    <h3 class="font-heading text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-4 relative z-10">Machinery & Testing Inventory</h3>
+                    
+                    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-2 relative z-10">
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">CNC Lathes</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">5 Units</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">CNC Milling</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">2 Units</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">6m Honing Machine</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">1 Unit</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">3m Honing Machine</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">2 Units</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">4m Vertical Honing</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">1 Unit</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">Hydraulic Test Rig (450 BAR)</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">1 Unit</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">TIG / MIG Welding Machines</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">3 Units</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">Thermal / PolyUrea Coating</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">2 Units</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                            <span class="text-sm text-slate-300">Bandsaw Cutting Machines</span>
+                            <span class="text-xs font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded">3 Units</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership / Team Section -->
+    <section class="py-24 bg-slate-50 border-t border-slate-100" id="team">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 gsap-fade-up">
+                <div class="inline-block px-3 py-1 rounded-full bg-slate-200 text-slate-600 text-xs font-bold tracking-widest mb-4 uppercase">Leadership</div>
+                <h2 class="text-4xl md:text-5xl font-heading font-black text-slate-900 mb-4">
+                    THE MINDS BEHIND <span class="text-brand-blue">THE MASTS</span>
+                </h2>
+                <p class="text-slate-600 leading-relaxed">
+                    A culmination of IISc, XLRI, and Tata Steel pedigree, combined with deep defense manufacturing expertise.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Team Member 1 -->
+                <div class="interactive-card rounded-2xl p-6 text-center gsap-fade-up group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-brand-blue text-white flex items-center justify-center font-heading text-xl font-bold mb-4 shadow-lg group-hover:scale-110 transition-transform">
+                        VK
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900">N. Vijay Kumar</h3>
+                    <p class="text-xs text-brand-blue font-bold tracking-wide uppercase mt-1 mb-4">Founder & MD</p>
+                    <p class="text-sm text-slate-600">20 years in Business Dev. Patented inventor of the Internal Hydraulic Telescopic Mast.</p>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="interactive-card rounded-2xl p-6 text-center gsap-fade-up group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-brand-gold text-white flex items-center justify-center font-heading text-xl font-bold mb-4 shadow-lg group-hover:scale-110 transition-transform">
+                        SM
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900">SR Murthy</h3>
+                    <p class="text-xs text-brand-blue font-bold tracking-wide uppercase mt-1 mb-4">Head - Business Ex.</p>
+                    <p class="text-sm text-slate-600">30 years in Mech. Engineering. Ensuring zero-defect production standards since inception.</p>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="interactive-card rounded-2xl p-6 text-center gsap-fade-up group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-brand-dark text-white flex items-center justify-center font-heading text-xl font-bold mb-4 shadow-lg group-hover:scale-110 transition-transform">
+                        GR
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900">G S Rao</h3>
+                    <p class="text-xs text-brand-blue font-bold tracking-wide uppercase mt-1 mb-4">Director Strategy</p>
+                    <p class="text-sm text-slate-600">IISc Bengaluru alum. 20 years in strategy with global industry exposure (Ex-Tata Steel).</p>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="interactive-card rounded-2xl p-6 text-center gsap-fade-up group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-slate-400 text-white flex items-center justify-center font-heading text-xl font-bold mb-4 shadow-lg group-hover:scale-110 transition-transform">
+                        SO
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900">S.R. Oruganti</h3>
+                    <p class="text-xs text-brand-blue font-bold tracking-wide uppercase mt-1 mb-4">Head - SCM</p>
+                    <p class="text-sm text-slate-600">XLRI MBA & Mech Engg. 30 years driving supply chain efficiency for critical defense projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations -->
+    <section class="py-24 bg-white" id="locations">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 gsap-fade-up">
+                <div class="inline-block px-3 py-1 rounded-full bg-brand-blue/10 text-brand-blue text-xs font-bold tracking-widest mb-4 uppercase">Infrastructure</div>
+                <h2 class="text-4xl md:text-5xl font-heading font-black text-slate-900 mb-4">
+                    THREE UNITS. <span class="text-brand-blue">ONE MISSION.</span>
+                </h2>
+                <p class="text-slate-600 leading-relaxed">
+                    Strategically located across Hyderabad—the heart of India's defense manufacturing corridor.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up relative">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-xl mb-4">
+                        <i class="ph-fill ph-map-pin"></i>
+                    </div>
+                    <div class="text-xs font-bold text-brand-blue tracking-widest uppercase mb-1">Unit 1</div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Erragadda</h3>
+                    <p class="text-sm text-slate-600">7-2-185/21/E, Fathebagh, Near Victory Garden, Erragadda, Hyderabad, T.S - 500018</p>
+                </div>
+
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up border-brand-blue/30 shadow-md">
+                    <div class="w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center text-xl mb-4 shadow-lg shadow-brand-blue/30">
+                        <i class="ph-fill ph-buildings"></i>
+                    </div>
+                    <div class="text-xs font-bold text-brand-gold tracking-widest uppercase mb-1">Unit 2 & Main Office</div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Balanagar</h3>
+                    <p class="text-sm text-slate-600">A/30, APIE, Beside Allahabad Bank Lane, Balanagar, Hyderabad, T.S - 500037</p>
+                </div>
+
+                <div class="interactive-card rounded-2xl p-8 gsap-fade-up">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-xl mb-4">
+                        <i class="ph-fill ph-map-pin"></i>
+                    </div>
+                    <div class="text-xs font-bold text-brand-blue tracking-widest uppercase mb-1">Unit 3</div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">Patancheru</h3>
+                    <p class="text-sm text-slate-600">Plot No 19 B/6, IDA, Phase II, Patancheru, Sangareddy, T.S - 502319</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-24 bg-slate-900 relative overflow-hidden" id="contact">
+        <!-- Background accents -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-blue/20 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-brand-gold/10 rounded-full blur-[100px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-16">
+            <div class="gsap-fade-up">
+                <div class="inline-block px-3 py-1 rounded-full bg-brand-blue/20 text-brand-light text-xs font-bold tracking-widest mb-4 uppercase">Contact Us</div>
+                <h2 class="text-4xl md:text-5xl font-heading font-black text-white mb-6">
+                    PARTNER WITH <span class="text-brand-blue">EXCEL ARDOR</span>
+                </h2>
+                <p class="text-slate-300 leading-relaxed mb-10">
+                    Whether you represent a defense organization, PSU, or private industry, our engineering team is ready to deliver precision mast systems and aerospace components tailored to your exact requirements.
+                </p>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-brand-blue text-xl border border-slate-700">
+                            <i class="ph-fill ph-envelope-simple"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Us</div>
+                            <a href="mailto:info@excelardor.com" class="text-white hover:text-brand-blue transition-colors">info@excelardor.com</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-brand-blue text-xl border border-slate-700">
+                            <i class="ph-fill ph-phone-call"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Call Us</div>
+                            <div class="text-white">+91 40 23800049 / +91 9989166874</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-8 lg:p-10 shadow-xl gsap-fade-up border border-slate-100 relative z-10">
+                <h3 class="font-heading text-2xl font-bold text-slate-900 mb-6">Send an Enquiry</h3>
+                <form class="space-y-4">
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Full Name</label>
+                            <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 transition-all text-sm" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Organization</label>
+                            <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 transition-all text-sm" placeholder="Company / PSU">
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Email Address</label>
+                            <input type="email" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 transition-all text-sm" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Phone Number</label>
+                            <input type="tel" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 transition-all text-sm" placeholder="+91 98765 43210">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Product Interest</label>
+                        <select class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 transition-all text-sm text-slate-700">
+                            <option>Pneumatic Telescopic Mast</option>
+                            <option>Hydraulic Telescopic Mast</option>
+                            <option>Electromechanical Mast</option>
+                            <option>Aerospace Components</option>
+                            <option>Other Enquiry</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Message</label>
+                        <textarea rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 transition-all text-sm resize-none" placeholder="Describe your requirements..."></textarea>
+                    </div>
+                    <button type="button" class="w-full bg-brand-blue text-white rounded-lg px-4 py-3.5 font-bold hover:bg-brand-dark transition-colors shadow-lg shadow-brand-blue/30 mt-2 flex items-center justify-center gap-2">
+                        Submit Enquiry <i class="ph-bold ph-paper-plane-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 pt-16 pb-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-12 mb-12 border-b border-slate-800 pb-12">
+            <div class="md:col-span-5">
+                <div class="text-2xl font-heading font-extrabold tracking-wide text-white mb-4">
+                    EXCEL <span class="text-brand-blue">ARDOR</span>
+                </div>
+                <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
+                    India's premier manufacturer of Telescopic Masts and precision aerospace components. Trusted by DRDO, BEL, and the Indian Navy.
+                </p>
+                <div class="flex gap-2 text-white">
+                    <span class="px-3 py-1 rounded bg-slate-800 border border-slate-700 text-[10px] font-bold tracking-wider uppercase">ISO 9001:2015</span>
+                    <span class="px-3 py-1 rounded bg-slate-800 border border-slate-700 text-[10px] font-bold tracking-wider uppercase">Patented Tech</span>
+                </div>
+            </div>
+            
+            <div class="md:col-span-4">
+                <h4 class="text-white font-heading font-bold text-lg mb-4 uppercase">Products</h4>
+                <ul class="space-y-2 text-sm text-slate-400">
+                    <li><a href="#products" class="hover:text-brand-blue transition-colors">Pneumatic Telescopic Masts</a></li>
+                    <li><a href="#products" class="hover:text-brand-blue transition-colors">Hydraulic Telescopic Masts</a></li>
+                    <li><a href="#products" class="hover:text-brand-blue transition-colors">Electromechanical Masts</a></li>
+                    <li><a href="#products" class="hover:text-brand-blue transition-colors">Aerospace Pyro Components</a></li>
+                    <li><a href="#products" class="hover:text-brand-blue transition-colors">Special Purpose Machines</a></li>
+                </ul>
+            </div>
+            
+            <div class="md:col-span-3">
+                <h4 class="text-white font-heading font-bold text-lg mb-4 uppercase">Company</h4>
+                <ul class="space-y-2 text-sm text-slate-400">
+                    <li><a href="#about" class="hover:text-brand-blue transition-colors">About Us</a></li>
+                    <li><a href="#capabilities" class="hover:text-brand-blue transition-colors">Manufacturing Units</a></li>
+                    <li><a href="#clients" class="hover:text-brand-blue transition-colors">Our Clients</a></li>
+                    <li><a href="#team" class="hover:text-brand-blue transition-colors">Leadership Team</a></li>
+                    <li><a href="#contact" class="hover:text-brand-blue transition-colors">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+            <div>&copy; 2026 Excel Ardor Private Limited. All Rights Reserved. Made in India.</div>
+            <div class="flex gap-4">
+                <span>CIN: U74900TG2014PTC095733</span>
+                <span>Patent No. 373182</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP Animations Script -->
+    <script>
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- INTERACTIVE TECHNICAL ANIMATION ---
+        
+        // Main Timeline
+        const tl = gsap.timeline({ 
+            repeat: -1, 
+            yoyo: true, 
+            repeatDelay: 2,
+            onUpdate: updateUI // Sync slider with animation
+        });
+        
+        // UI Elements
+        const slider = document.getElementById('anim-slider');
+        const progressText = document.getElementById('progress-text');
+        const playBtn = document.getElementById('anim-toggle');
+        const playIcon = document.getElementById('anim-icon');
+        let isUserInteracting = false;
+
+        // Initial State: Collapsed
+        // Clear any previous settings before redefining
+        tl.clear();
+
+        // 0. Setup
+        tl.set(["#stage-1", "#stage-2", "#stage-3"], { y: 10 }); // Start slightly tucked
+        
+        // Animation Sequence (Extension)
+        // 1. Extend Stage 1
+        tl.to("#stage-1", { 
+            y: -80, 
+            duration: 1.5, 
+            ease: "power3.inOut" 
+        });
+        
+        // 2. Extend Stage 2
+        tl.to("#stage-2", { 
+            y: -120, 
+            duration: 1.5, 
+            ease: "power3.inOut" 
+        }, "-=1.0"); 
+        
+        // 3. Extend Stage 3
+        tl.to("#stage-3", { 
+            y: -110, 
+            duration: 1.5, 
+            ease: "power3.inOut" 
+        }, "-=1.0");
+
+        // Helper function for UI updates
+        function updateHeight(progress) {
+            // progress is 0 to 1
+            // Update height text (0 to 15m)
+            const heightText = document.getElementById('height-display');
+            if(heightText) {
+                // The animation logic used previously was split; now unified.
+                // We'll estimate effective height based on total timeline progress.
+                // Timeline covers full extension.
+                const height = (progress * 15.0).toFixed(1);
+                heightText.innerText = height + "m";
+            }
+            
+            // Sync slider if not interacting
+            const slider = document.getElementById('anim-slider');
+            const progressText = document.getElementById('progress-text');
+            if(slider && !isUserInteracting) {
+                slider.value = progress * 100;
+                progressText.innerText = Math.round(progress * 100) + '%';
+            }
+        }
+
+        // --- INTERACTIVITY HANDLERS ---
+        
+        // Note: Global variables for UI elements are defined at the top of script or need scoping
+        // Let's ensure they are accessible
+
+        // Function called every frame of animation BY GSAP
+        function updateUI() {
+            if (!isUserInteracting) {
+                updateHeight(this.progress());
+            }
+        }
+        
+        // Re-bind update callback to timeline
+        tl.eventCallback("onUpdate", updateUI);
+
+        // SLIDER CONTROL (Scrubbing)
+        if(slider) {
+            slider.addEventListener('input', function() {
+                isUserInteracting = true;
+                tl.pause(); 
+                updatePlayButtonState(false); 
+                
+                // Scrub timeline manually
+                const p = this.value / 100;
+                tl.progress(p);
+                
+                // Update text manually since onUpdate is suppressed by flag
+                const heightText = document.getElementById('height-display');
+                const progressText = document.getElementById('progress-text');
+                if(heightText) heightText.innerText = (p * 15.0).toFixed(1) + "m";
+                if(progressText) progressText.innerText = Math.round(p * 100) + '%';
+            });
+
+            slider.addEventListener('change', function() {
+                isUserInteracting = false;
+                // Stay paused to let user examine
+            });
+        }
+
+        // PLAY/PAUSE TOGGLE
+        if(playBtn) {
+            playBtn.addEventListener('click', function() {
+                if (tl.isActive()) {
+                    tl.pause();
+                    updatePlayButtonState(false);
+                } else {
+                    tl.play();
+                    updatePlayButtonState(true);
+                }
+            });
+        }
+
+        function updatePlayButtonState(isPlaying) {
+            if(!playBtn) return;
+            const icon = playBtn.querySelector('i');
+            if (isPlaying) {
+                if(icon) icon.className = "ph-fill ph-pause";
+                playBtn.classList.remove("bg-slate-400");
+                playBtn.classList.add("bg-brand-blue");
+            } else {
+                if(icon) icon.className = "ph-fill ph-play";
+                playBtn.classList.remove("bg-brand-blue");
+                playBtn.classList.add("bg-slate-400");
+            }
+        }
+
+        // --- END INTERACTIVE ANIMATION ---
+
+        // Initialize Interactive Animation
+        // Clean start
+        tl.progress(0);
+        updateHeight(0);
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-md');
+                navbar.style.padding = '0.5rem 0';
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.style.padding = '1rem 0';
+            }
+        });
+
+        // Initialize Fade Up Animations
+        const fadeUpElements = document.querySelectorAll('.gsap-fade-up');
+        
+        fadeUpElements.forEach((element) => {
+            gsap.fromTo(element, 
+                { 
+                    y: 40, 
+                    opacity: 0 
+                },
+                {
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 85%", // Triggers when the top of the element hits 85% of viewport
+                        toggleActions: "play none none none"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power3.out"
+                }
+            );
+        });
+
+        // Hero Parallax Setup
+        gsap.to('.floating', {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero-bg",
+                start: "top top", 
+                end: "bottom top",
+                scrub: true
+            } 
+        });
+    </script>
+</body>
+</html>

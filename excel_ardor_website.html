@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Excel Ardor Pvt. Ltd. | India's Precision Defense Engineering</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #04091a;
+    --navy2: #070e24;
+    --blue: #0066ff;
+    --blue2: #0044cc;
+    --cyan: #00c8ff;
+    --gold: #f0b429;
+    --gold2: #e09000;
+    --white: #f0f4ff;
+    --gray: #8892a4;
+    --card: #0a1128;
+    --border: rgba(0,200,255,0.13);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--navy);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--navy2);}
+  ::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(16px);background:rgba(4,9,26,0.85);border-bottom:1px solid var(--border);transition:all 0.3s;}
+  nav.scrolled{padding:12px 5%;background:rgba(4,9,26,0.97);}
+  .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;letter-spacing:1px;}
+  .nav-logo span{color:var(--cyan);}
+  .nav-links{display:flex;gap:30px;list-style:none;}
+  .nav-links a{color:var(--gray);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:0.5px;transition:color 0.3s;text-transform:uppercase;}
+  .nav-links a:hover{color:var(--cyan);}
+  .nav-cta{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border:none;padding:9px 22px;border-radius:6px;font-size:0.82rem;font-weight:600;cursor:pointer;letter-spacing:0.5px;transition:all 0.3s;text-decoration:none;}
+  .nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,102,255,0.45);}
+
+  /* HERO */
+  #hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;padding:0 5%;}
+  #particles-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;}
+  .hero-grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(0,200,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,0.04) 1px,transparent 1px);background-size:60px 60px;z-index:1;}
+  .hero-content{position:relative;z-index:2;}
+  .hero-badge{display:inline-block;padding:7px 18px;border:1px solid rgba(0,200,255,0.4);border-radius:30px;font-size:0.78rem;font-weight:600;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:28px;animation:fadeInDown 0.8s ease both;}
+  .hero-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.8rem,6.5vw,5.5rem);font-weight:900;line-height:1.05;margin-bottom:20px;animation:fadeInUp 0.9s 0.2s ease both;}
+  .hero-title .line1{display:block;}
+  .hero-title .accent{color:var(--cyan);}
+  .hero-title .gold{color:var(--gold);}
+  .hero-sub{font-size:clamp(0.95rem,1.8vw,1.15rem);color:var(--gray);max-width:600px;margin:0 auto 40px;line-height:1.7;animation:fadeInUp 0.9s 0.4s ease both;}
+  .hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.9s 0.6s ease both;}
+  .btn-primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;padding:14px 34px;border-radius:8px;font-weight:600;font-size:0.95rem;text-decoration:none;transition:all 0.3s;border:none;cursor:pointer;}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(0,102,255,0.5);}
+  .btn-outline{border:1.5px solid rgba(0,200,255,0.5);color:var(--cyan);padding:14px 34px;border-radius:8px;font-weight:600;font-size:0.95rem;text-decoration:none;transition:all 0.3s;background:transparent;}
+  .btn-outline:hover{background:rgba(0,200,255,0.1);transform:translateY(-3px);}
+  .hero-trust{margin-top:60px;animation:fadeInUp 0.9s 0.8s ease both;}
+  .hero-trust p{font-size:0.75rem;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+  .trust-logos{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .trust-tag{padding:6px 16px;border:1px solid rgba(255,255,255,0.12);border-radius:20px;font-size:0.75rem;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.04);}
+  .mast-hero{position:absolute;right:8%;bottom:0;z-index:1;opacity:0.18;transform-origin:bottom center;animation:mastExtend 2s 0.3s cubic-bezier(0.34,1.56,0.64,1) both;}
+  .mast-hero svg{height:420px;width:auto;}
+
+  /* STATS */
+  #stats{padding:60px 5%;background:linear-gradient(135deg,rgba(0,102,255,0.08),rgba(0,200,255,0.05));border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px;max-width:1000px;margin:0 auto;text-align:center;}
+  .stat-item{padding:30px 20px;}
+  .stat-num{font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:900;color:var(--cyan);line-height:1;display:block;}
+  .stat-label{font-size:0.82rem;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;margin-top:8px;}
+  .stat-item:nth-child(2) .stat-num,.stat-item:nth-child(4) .stat-num{color:var(--gold);}
+
+  /* SECTION COMMON */
+  section{padding:100px 5%;}
+  .section-tag{display:inline-block;padding:5px 16px;border:1px solid rgba(0,200,255,0.3);border-radius:20px;font-size:0.72rem;font-weight:600;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:16px;}
+  .section-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:900;line-height:1.1;margin-bottom:16px;}
+  .section-sub{color:var(--gray);font-size:1rem;line-height:1.7;max-width:580px;}
+  .section-header{margin-bottom:60px;}
+  .accent-line{width:60px;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px;margin:16px 0;}
+
+  /* ABOUT */
+  #about{background:var(--navy2);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+  .about-text p{color:var(--gray);line-height:1.8;margin-bottom:20px;font-size:0.97rem;}
+  .about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px;}
+  .highlight-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;transition:all 0.3s;}
+  .highlight-box:hover{border-color:rgba(0,200,255,0.4);transform:translateY(-3px);}
+  .highlight-box .icon{font-size:1.5rem;margin-bottom:8px;}
+  .highlight-box h4{font-size:0.88rem;font-weight:600;margin-bottom:4px;}
+  .highlight-box p{font-size:0.78rem;color:var(--gray);margin:0;}
+  .timeline{position:relative;padding-left:30px;}
+  .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--blue),var(--cyan),var(--gold));}
+  .timeline-item{position:relative;margin-bottom:32px;opacity:0;transform:translateX(20px);transition:all 0.6s;}
+  .timeline-item.visible{opacity:1;transform:translateX(0);}
+  .timeline-dot{position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px rgba(0,200,255,0.8);}
+  .timeline-year{font-size:0.72rem;font-weight:700;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+  .timeline-text{font-size:0.9rem;color:var(--white);font-weight:600;margin-bottom:2px;}
+  .timeline-desc{font-size:0.78rem;color:var(--gray);}
+
+  /* PRODUCTS */
+  #products{background:var(--navy);}
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+  .product-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:30px;cursor:pointer;transition:all 0.4s;transform-style:preserve-3d;position:relative;overflow:hidden;}
+  .product-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,102,255,0.05),rgba(0,200,255,0.03));opacity:0;transition:opacity 0.3s;border-radius:14px;}
+  .product-card:hover{border-color:rgba(0,200,255,0.5);box-shadow:0 20px 60px rgba(0,102,255,0.2);}
+  .product-card:hover::before{opacity:1;}
+  .product-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:18px;background:linear-gradient(135deg,rgba(0,102,255,0.2),rgba(0,200,255,0.1));}
+  .product-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:10px;}
+  .product-card p{font-size:0.82rem;color:var(--gray);line-height:1.6;margin-bottom:16px;}
+  .product-specs{display:flex;flex-wrap:wrap;gap:8px;}
+  .spec-tag{padding:4px 10px;background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.2);border-radius:20px;font-size:0.72rem;color:var(--cyan);}
+
+  /* CLIENTS */
+  #clients{background:var(--navy2);overflow:hidden;}
+  .marquee-wrapper{overflow:hidden;position:relative;}
+  .marquee-wrapper::before,.marquee-wrapper::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;}
+  .marquee-wrapper::before{left:0;background:linear-gradient(90deg,var(--navy2),transparent);}
+  .marquee-wrapper::after{right:0;background:linear-gradient(-90deg,var(--navy2),transparent);}
+  .marquee-track{display:flex;gap:24px;animation:marquee 28s linear infinite;width:max-content;}
+  .marquee-track:hover{animation-play-state:paused;}
+  .client-chip{display:flex;align-items:center;gap:10px;padding:14px 22px;background:var(--card);border:1px solid var(--border);border-radius:10px;white-space:nowrap;transition:all 0.3s;min-width:220px;}
+  .client-chip:hover{border-color:rgba(0,200,255,0.4);background:rgba(0,200,255,0.05);}
+  .client-chip .c-icon{font-size:1.4rem;}
+  .client-chip-text h4{font-size:0.82rem;font-weight:600;}
+  .client-chip-text p{font-size:0.7rem;color:var(--gray);}
+
+  /* CAPABILITIES */
+  #capabilities{background:var(--navy);}
+  .cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  .cap-list{display:grid;gap:16px;}
+  .cap-item{display:flex;gap:16px;align-items:flex-start;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:12px;transition:all 0.3s;}
+  .cap-item:hover{border-color:rgba(240,180,41,0.4);transform:translateX(6px);}
+  .cap-item .cap-icon{font-size:1.8rem;flex-shrink:0;margin-top:2px;}
+  .cap-item h4{font-size:0.95rem;font-weight:600;margin-bottom:5px;}
+  .cap-item p{font-size:0.8rem;color:var(--gray);line-height:1.5;}
+  .machine-table{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+  .machine-table h3{padding:20px 24px;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;border-bottom:1px solid var(--border);color:var(--cyan);}
+  .machine-row{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s;}
+  .machine-row:last-child{border-bottom:none;}
+  .machine-row:hover{background:rgba(0,200,255,0.04);}
+  .machine-row span:first-child{font-size:0.83rem;}
+  .machine-row .qty{font-size:0.83rem;font-weight:700;color:var(--gold);background:rgba(240,180,41,0.1);padding:3px 10px;border-radius:20px;}
+
+  /* CERTIFICATIONS */
+  #certs{background:var(--navy2);}
+  .certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;}
+  .cert-card{background:var(--card);border-radius:16px;padding:36px 28px;text-align:center;position:relative;overflow:hidden;border:1px solid var(--border);transition:all 0.4s;}
+  .cert-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,102,255,0.25);border-color:rgba(0,200,255,0.4);}
+  .cert-badge{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 20px;background:linear-gradient(135deg,rgba(0,102,255,0.2),rgba(0,200,255,0.1));}
+  .cert-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:10px;color:var(--gold);}
+  .cert-card p{font-size:0.82rem;color:var(--gray);line-height:1.6;}
+  .cert-number{display:inline-block;margin-top:14px;padding:5px 14px;background:rgba(240,180,41,0.1);border:1px solid rgba(240,180,41,0.3);border-radius:20px;font-size:0.72rem;color:var(--gold);font-weight:600;}
+
+  /* TEAM */
+  #team{background:var(--navy);}
+  .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}
+  .team-card{height:260px;perspective:1000px;cursor:pointer;}
+  .team-inner{position:relative;width:100%;height:100%;transition:transform 0.65s cubic-bezier(0.4,0.2,0.2,1);transform-style:preserve-3d;}
+  .team-card:hover .team-inner{transform:rotateY(180deg);}
+  .team-front,.team-back{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;padding:28px;}
+  .team-front{background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:flex-end;}
+  .team-back{background:linear-gradient(135deg,var(--blue2),#003399);border:1px solid rgba(0,200,255,0.3);transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;}
+  .team-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:16px;}
+  .team-front h3{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:800;}
+  .team-front p{font-size:0.75rem;color:var(--cyan);margin-top:4px;}
+  .team-back h3{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:8px;}
+  .team-back p{font-size:0.78rem;color:rgba(255,255,255,0.85);line-height:1.6;}
+
+  /* LOCATIONS */
+  #locations{background:var(--navy2);}
+  .loc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+  .loc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:30px;transition:all 0.3s;position:relative;overflow:hidden;}
+  .loc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan));transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+  .loc-card:hover::after{transform:scaleX(1);}
+  .loc-card:hover{transform:translateY(-5px);border-color:rgba(0,200,255,0.3);}
+  .loc-unit{font-size:0.72rem;font-weight:700;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+  .loc-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:10px;}
+  .loc-card p{font-size:0.82rem;color:var(--gray);line-height:1.6;}
+  .loc-pin{font-size:1.5rem;margin-bottom:14px;}
+
+  /* CONTACT */
+  #contact{background:linear-gradient(135deg,#04091a,#050d22,#030812);position:relative;overflow:hidden;}
+  #contact::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(0,102,255,0.08),transparent 70%);pointer-events:none;}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;position:relative;z-index:1;}
+  .contact-info p{color:var(--gray);line-height:1.8;margin-bottom:30px;}
+  .contact-detail{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+  .contact-detail .c-icon-box{width:44px;height:44px;border-radius:10px;background:rgba(0,102,255,0.15);border:1px solid rgba(0,102,255,0.3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+  .contact-detail div h4{font-size:0.88rem;font-weight:600;margin-bottom:2px;}
+  .contact-detail div p{font-size:0.8rem;color:var(--gray);margin:0;}
+  .contact-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px;}
+  .form-row{margin-bottom:20px;}
+  .form-row label{display:block;font-size:0.78rem;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .form-row input,.form-row textarea,.form-row select{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;color:var(--white);font-size:0.9rem;font-family:'Inter',sans-serif;transition:border-color 0.3s;outline:none;}
+  .form-row input:focus,.form-row textarea:focus,.form-row select:focus{border-color:var(--cyan);}
+  .form-row textarea{height:110px;resize:vertical;}
+  .form-row select option{background:var(--card);}
+  .submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;border-radius:8px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:all 0.3s;}
+  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(0,102,255,0.5);}
+
+  /* FOOTER */
+  footer{background:#020610;border-top:1px solid var(--border);padding:50px 5% 30px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:40px;}
+  .footer-brand p{font-size:0.82rem;color:var(--gray);line-height:1.7;margin-top:14px;}
+  .footer-links h4{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--cyan);margin-bottom:16px;}
+  .footer-links ul{list-style:none;}
+  .footer-links li{margin-bottom:10px;}
+  .footer-links a{color:var(--gray);text-decoration:none;font-size:0.82rem;transition:color 0.3s;}
+  .footer-links a:hover{color:var(--white);}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);font-size:0.75rem;color:var(--gray);flex-wrap:wrap;gap:10px;}
+  .footer-bottom span{color:var(--cyan);}
+
+  /* KEYWORDS (SEO hidden visually but readable by search engines) */
+  .seo-keywords{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+
+  /* ANIMATIONS */
+  @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes mastExtend{0%{transform:scaleY(0.2);opacity:0;}100%{transform:scaleY(1);opacity:0.18;}}
+
+  /* SCROLL REVEAL */
+  .reveal{opacity:0;transform:translateY(40px);transition:all 0.7s cubic-bezier(0.4,0,0.2,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-left{opacity:0;transform:translateX(-40px);transition:all 0.7s;}
+  .reveal-left.visible{opacity:1;transform:translateX(0);}
+  .reveal-right{opacity:0;transform:translateX(40px);transition:all 0.7s;}
+  .reveal-right.visible{opacity:1;transform:translateX(0);}
+
+  /* SCROLL TOP */
+  #scrollTop{position:fixed;bottom:30px;right:30px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;color:#fff;font-size:1.2rem;cursor:pointer;opacity:0;transition:all 0.3s;z-index:999;display:flex;align-items:center;justify-content:center;}
+  #scrollTop.show{opacity:1;}
+  #scrollTop:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,102,255,0.5);}
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .about-grid,.contact-grid,.cap-grid,.footer-grid{grid-template-columns:1fr;}
+    .mast-hero{display:none;}
+    .nav-links{display:none;}
+  }
+  @media(max-width:600px){
+    section{padding:70px 5%;}
+    .hero-title{font-size:2.4rem;}
+    .about-highlights{grid-template-columns:1fr;}
+    .footer-bottom{flex-direction:column;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<!-- SEO KEYWORDS -->
+<div class="seo-keywords" aria-hidden="true">
+  Telescopic masts, Aerospace components, Pneumatic masts, Masts, Electromechanical masts,
+  Light weight masts, Hydraulic masts, Precision components, Heavy duty masts,
+  Hydraulic cylinders and power packs, Composite sections, Pyro components
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">EXCEL <span>ARDOR</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#capabilities">Capabilities</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in Touch</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-grid-overlay"></div>
+  <div class="mast-hero">
+    <svg viewBox="0 0 80 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="36" y="380" width="8" height="40" fill="rgba(0,200,255,0.6)" rx="2"/>
+      <rect x="33" y="320" width="14" height="65" fill="rgba(0,200,255,0.5)" rx="2"/>
+      <rect x="30" y="240" width="20" height="85" fill="rgba(0,200,255,0.45)" rx="2"/>
+      <rect x="27" y="150" width="26" height="95" fill="rgba(0,200,255,0.4)" rx="2"/>
+      <rect x="24" y="50" width="32" height="105" fill="rgba(0,200,255,0.35)" rx="2"/>
+      <rect x="20" y="0" width="40" height="55" fill="rgba(0,200,255,0.3)" rx="2"/>
+      <line x1="40" y1="0" x2="5" y2="100" stroke="rgba(0,200,255,0.25)" stroke-width="1.5"/>
+      <line x1="40" y1="0" x2="75" y2="100" stroke="rgba(0,200,255,0.25)" stroke-width="1.5"/>
+      <circle cx="40" cy="0" r="5" fill="rgba(0,200,255,0.9)"/>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🇮🇳 India's Defense Engineering Pioneer — Since 2014</div>
+    <h1 class="hero-title">
+      <span class="line1">India's <span class="accent">Precision</span> Force</span>
+      <span>in <span class="gold">Telescopic Masts</span> &</span>
+      <span>Defense Engineering</span>
+    </h1>
+    <p class="hero-sub">Trusted by DRDO · BEL · Indian Navy · NFC · ECIL — delivering patented, precision-engineered mast systems and aerospace components for India's most critical missions.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Explore Our Products</a>
+      <a href="#contact" class="btn-outline">Partner With Us</a>
+    </div>
+    <div class="hero-trust">
+      <p>Trusted By</p>
+      <div class="trust-logos">
+        <span class="trust-tag">DRDO</span>
+        <span class="trust-tag">BEL</span>
+        <span class="trust-tag">Indian Navy</span>
+        <span class="trust-tag">NFC – Atomic Energy</span>
+        <span class="trust-tag">ECIL</span>
+        <span class="trust-tag">ISO 9001:2015 ✓</span>
+        <span class="trust-tag">Patent 373182 ✓</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="10">0</span>
+      <div class="stat-label">+ Years of Excellence</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="13">0</span>
+      <div class="stat-label">+ Defense & PSU Clients</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="7">0</span>
+      <div class="stat-label">+ Mast Types Manufactured</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="30">0</span>
+      <div class="stat-label">+ Years Combined Engineering</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text reveal-left">
+      <div class="section-tag">About Us</div>
+      <h2 class="section-title">Engineered for India's <span style="color:var(--cyan)">Most Critical</span> Missions</h2>
+      <div class="accent-line"></div>
+      <p>Excel Ardor Private Limited, incorporated in Hyderabad in 2014, is one of India's leading manufacturers of Telescopic Masts — pneumatic, hydraulic, electromechanical — and Precision Defense Engineering solutions. Holder of a Government of India Patent and ISO 9001:2015 certified, we power India's most critical defense, atomic energy, and aerospace organizations.</p>
+      <p>From heavy duty masts to light weight masts, hydraulic cylinders and power packs to composite sections and pyro components — every product is designed, manufactured and rigorously tested in-house across our three Hyderabad facilities.</p>
+      <div class="about-highlights">
+        <div class="highlight-box">
+          <div class="icon">🇮🇳</div>
+          <h4>Government of India Patent</h4>
+          <p>Patent No. 373182 — Internal Hydraulic Telescopic Mast</p>
+        </div>
+        <div class="highlight-box">
+          <div class="icon">✅</div>
+          <h4>ISO 9001:2015 Certified</h4>
+          <p>Design, Engineering, Manufacture & Servicing</p>
+        </div>
+        <div class="highlight-box">
+          <div class="icon">🏭</div>
+          <h4>3 Manufacturing Units</h4>
+          <p>Strategically located across Hyderabad</p>
+        </div>
+        <div class="highlight-box">
+          <div class="icon">🛡️</div>
+          <h4>Defense & Aerospace</h4>
+          <p>Serving DRDO, BEL, Navy & Atomic Energy</p>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="section-tag">Our Journey</div>
+      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:30px;">A Decade of <span style="color:var(--gold)">Precision</span></h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">September 2014</div>
+          <div class="timeline-text">Excel Ardor Founded</div>
+          <div class="timeline-desc">Incorporated under Companies Act 2013, Hyderabad</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:var(--gold);box-shadow:0 0 12px rgba(240,180,41,0.8);"></div>
+          <div class="timeline-year">2014 – Filing</div>
+          <div class="timeline-text">Patent Filed — App No. 4701/CHE/2014</div>
+          <div class="timeline-desc">Internal Hydraulic Telescopic Mast innovation filed with Patent Office of India</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:var(--blue);box-shadow:0 0 12px rgba(0,102,255,0.8);"></div>
+          <div class="timeline-year">2017</div>
+          <div class="timeline-text">GST Registered — GSTIN: 36AADCE7737N1Z3</div>
+          <div class="timeline-desc">Fully compliant with Indian regulatory requirements</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:var(--cyan);box-shadow:0 0 12px rgba(0,200,255,0.8);"></div>
+          <div class="timeline-year">July 2021</div>
+          <div class="timeline-text">Patent Granted — No. 373182</div>
+          <div class="timeline-desc">20-year exclusive patent. A landmark for Indian defense SME innovation.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:var(--gold);box-shadow:0 0 12px rgba(240,180,41,0.8);"></div>
+          <div class="timeline-year">September 2021</div>
+          <div class="timeline-text">ISO 9001:2015 Certified</div>
+          <div class="timeline-desc">Cert No. Q91864141102 — HYM International Certifications</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:#00ff88;box-shadow:0 0 12px rgba(0,255,136,0.8);"></div>
+          <div class="timeline-year">2026</div>
+          <div class="timeline-text">Expanding India's Defense Horizon</div>
+          <div class="timeline-desc">13+ major clients, 3 production units, recognised as one of India's best</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="section-header reveal">
+    <div class="section-tag">Products</div>
+    <h2 class="section-title">India's Most Complete <span style="color:var(--cyan)">Mast System</span> Portfolio</h2>
+    <div class="accent-line"></div>
+    <p class="section-sub">From lightweight field-deployable masts to heavy duty defense-grade systems — engineered for every mission requirement.</p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card reveal">
+      <div class="product-icon">🌬️</div>
+      <h3>Pneumatic Telescopic Masts</h3>
+      <p>Air-pressure operated masts for rapid field deployment. Portable, reliable and ideal for communications and surveillance in any terrain.</p>
+      <div class="product-specs">
+        <span class="spec-tag">Up to 15.8m</span><span class="spec-tag">50kg Head Load</span><span class="spec-tag">Portable</span>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon" style="background:linear-gradient(135deg,rgba(240,180,41,0.2),rgba(240,180,41,0.08));">💧</div>
+      <h3>Hydraulic Telescopic Masts</h3>
+      <p>Patented internal hydraulic design (Patent No. 373182). Exceptional load capacity for the most demanding defense and industrial applications.</p>
+      <div class="product-specs">
+        <span class="spec-tag" style="color:var(--gold);border-color:rgba(240,180,41,0.3);background:rgba(240,180,41,0.08);">PATENTED</span>
+        <span class="spec-tag">500kg Head Load</span><span class="spec-tag">5m Height</span>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon">⚡</div>
+      <h3>Electromechanical Masts</h3>
+      <p>Rope Drive and Screw Drive variants. Motor-operated precision masts for radar, communications, surveillance and defense systems.</p>
+      <div class="product-specs">
+        <span class="spec-tag">Up to 15m</span><span class="spec-tag">250kg Load</span><span class="spec-tag">Rope & Screw Drive</span>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon">🚗</div>
+      <h3>Vehicle Mounted Masts</h3>
+      <p>Lightweight masts engineered for vehicle integration. Rapid deployment for mobile surveillance, communications and military operations.</p>
+      <div class="product-specs">
+        <span class="spec-tag">Mobile</span><span class="spec-tag">Quick Setup</span><span class="spec-tag">All-Terrain</span>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon">🔄</div>
+      <h3>Inverted Telescopic Masts</h3>
+      <p>Unique inverted design for specialized low-clearance installations. 6m erected height with a 30kg head load capacity.</p>
+      <div class="product-specs">
+        <span class="spec-tag">6m Height</span><span class="spec-tag">30kg Load</span><span class="spec-tag">Specialized</span>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon">🏗️</div>
+      <h3>Pull-Up & FRP Composite Masts</h3>
+      <p>Manual pull-up masts and Fibre Reinforced Plastic composite sections — non-conductive, ultra-lightweight, perfect for sensitive RF environments.</p>
+      <div class="product-specs">
+        <span class="spec-tag">Composite Sections</span><span class="spec-tag">Non-Conductive</span><span class="spec-tag">6m</span>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon">⚙️</div>
+      <h3>Hydraulic Cylinders & Power Packs</h3>
+      <p>Precision-manufactured hydraulic cylinders and complete power pack assemblies. Tested to 450 BAR for industrial and defense applications.</p>
+      <div class="product-specs">
+        <span class="spec-tag">450 BAR Tested</span><span class="spec-tag">Defense Grade</span><span class="spec-tag">Custom</span>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon">🚀</div>
+      <h3>Aerospace & Pyro Components</h3>
+      <p>Precision aerospace components and pyrotechnic components manufactured to exact specifications for DRDO, RCI and defense aerospace programs.</p>
+      <div class="product-specs">
+        <span class="spec-tag">Aerospace Grade</span><span class="spec-tag">Pyro Components</span><span class="spec-tag">DRDO Approved</span>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-icon">🔧</div>
+      <h3>Special Purpose Machines</h3>
+      <p>Custom-engineered SPMs and material handling systems — scissor lifts, decontamination equipment, and automatic storage systems.</p>
+      <div class="product-specs">
+        <span class="spec-tag">Custom Engineered</span><span class="spec-tag">Defense SPMs</span><span class="spec-tag">Industrial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="section-header reveal" style="text-align:center;margin-bottom:50px;">
+    <div class="section-tag" style="display:inline-block;">Our Clients</div>
+    <h2 class="section-title">Serving the Institutions <span style="color:var(--gold)">That Protect India</span></h2>
+    <div class="accent-line" style="margin:16px auto;"></div>
+    <p class="section-sub" style="margin:0 auto;">Trusted by India's most prestigious defense, nuclear energy, and public sector organizations since 2014.</p>
+  </div>
+  <div class="marquee-wrapper">
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="client-chip"><span class="c-icon">🔬</span><div class="client-chip-text"><h4>Nuclear Fuel Complex (NFC)</h4><p>Ministry of Atomic Energy</p></div></div>
+      <div class="client-chip"><span class="c-icon">🛡️</span><div class="client-chip-text"><h4>Advanced Systems Laboratory</h4><p>DRDO, Ministry of Defence</p></div></div>
+      <div class="client-chip"><span class="c-icon">🛡️</span><div class="client-chip-text"><h4>Research Centre Imarat</h4><p>DRDO, Ministry of Defence</p></div></div>
+      <div class="client-chip"><span class="c-icon">⚙️</span><div class="client-chip-text"><h4>Bharat Electronics Ltd.</h4><p>BEL Bengaluru — Govt. of India</p></div></div>
+      <div class="client-chip"><span class="c-icon">🛡️</span><div class="client-chip-text"><h4>LRDE, DRDO</h4><p>Ministry of Defence, Bangalore</p></div></div>
+      <div class="client-chip"><span class="c-icon">⚙️</span><div class="client-chip-text"><h4>BEL Hyderabad</h4><p>Bharat Electronics Ltd.</p></div></div>
+      <div class="client-chip"><span class="c-icon">⚓</span><div class="client-chip-text"><h4>Naval Dockyard</h4><p>Visakhapatnam — Indian Navy</p></div></div>
+      <div class="client-chip"><span class="c-icon">🌐</span><div class="client-chip-text"><h4>Astra Rafael Comsys</h4><p>India / Israel Joint Venture</p></div></div>
+      <div class="client-chip"><span class="c-icon">🏗️</span><div class="client-chip-text"><h4>ECIL</h4><p>Electronic Corporation of India</p></div></div>
+      <div class="client-chip"><span class="c-icon">🏭</span><div class="client-chip-text"><h4>Rashtriya Ispat Nigam</h4><p>RINL, Visakhapatnam</p></div></div>
+      <!-- DUPLICATE for seamless loop -->
+      <div class="client-chip"><span class="c-icon">🔬</span><div class="client-chip-text"><h4>Nuclear Fuel Complex (NFC)</h4><p>Ministry of Atomic Energy</p></div></div>
+      <div class="client-chip"><span class="c-icon">🛡️</span><div class="client-chip-text"><h4>Advanced Systems Laboratory</h4><p>DRDO, Ministry of Defence</p></div></div>
+      <div class="client-chip"><span class="c-icon">🛡️</span><div class="client-chip-text"><h4>Research Centre Imarat</h4><p>DRDO, Ministry of Defence</p></div></div>
+      <div class="client-chip"><span class="c-icon">⚙️</span><div class="client-chip-text"><h4>Bharat Electronics Ltd.</h4><p>BEL Bengaluru — Govt. of India</p></div></div>
+      <div class="client-chip"><span class="c-icon">🛡️</span><div class="client-chip-text"><h4>LRDE, DRDO</h4><p>Ministry of Defence, Bangalore</p></div></div>
+      <div class="client-chip"><span class="c-icon">⚙️</span><div class="client-chip-text"><h4>BEL Hyderabad</h4><p>Bharat Electronics Ltd.</p></div></div>
+      <div class="client-chip"><span class="c-icon">⚓</span><div class="client-chip-text"><h4>Naval Dockyard</h4><p>Visakhapatnam — Indian Navy</p></div></div>
+      <div class="client-chip"><span class="c-icon">🌐</span><div class="client-chip-text"><h4>Astra Rafael Comsys</h4><p>India / Israel Joint Venture</p></div></div>
+      <div class="client-chip"><span class="c-icon">🏗️</span><div class="client-chip-text"><h4>ECIL</h4><p>Electronic Corporation of India</p></div></div>
+      <div class="client-chip"><span class="c-icon">🏭</span><div class="client-chip-text"><h4>Rashtriya Ispat Nigam</h4><p>RINL, Visakhapatnam</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section id="capabilities">
+  <div class="cap-grid">
+    <div>
+      <div class="section-tag reveal">Manufacturing</div>
+      <h2 class="section-title reveal">Precision at <span style="color:var(--gold)">Every Scale.</span></h2>
+      <div class="accent-line reveal"></div>
+      <div class="cap-list">
+        <div class="cap-item reveal">
+          <div class="cap-icon">🏭</div>
+          <div><h4>CNC Precision Machining</h4><p>5 CNC Lathes + 2 CNC Milling machines delivering micron-level precision for aerospace and defense-grade components.</p></div>
+        </div>
+        <div class="cap-item reveal">
+          <div class="cap-icon">🔩</div>
+          <div><h4>Advanced Honing — Up to 6m</h4><p>4m Vertical, 6m, 3m & 2m honing machines for perfect bore finishing on all mast cylinders and hydraulic components.</p></div>
+        </div>
+        <div class="cap-item reveal">
+          <div class="cap-icon">🔥</div>
+          <div><h4>TIG / MIG / Arc Welding</h4><p>Full structural welding capabilities ensuring complete integrity for all assemblies to defense-grade standards.</p></div>
+        </div>
+        <div class="cap-item reveal">
+          <div class="cap-icon">🛢️</div>
+          <div><h4>Hydraulic Testing — 450 BAR</h4><p>In-house test rig validates every hydraulic mast and power pack under extreme pressure conditions before delivery.</p></div>
+        </div>
+        <div class="cap-item reveal">
+          <div class="cap-icon">🎨</div>
+          <div><h4>Thermal Spray & PolyUrea Coating</h4><p>Advanced surface protection for corrosion resistance and extended service life in harsh field environments.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="machine-table">
+        <h3>⚙️ Manufacturing Equipment</h3>
+        <div class="machine-row"><span>CNC Lathe</span><span class="qty">×5</span></div>
+        <div class="machine-row"><span>CNC Milling</span><span class="qty">×2</span></div>
+        <div class="machine-row"><span>6m Honing Machine</span><span class="qty">×1</span></div>
+        <div class="machine-row"><span>4m Vertical Honing Machine</span><span class="qty">×1</span></div>
+        <div class="machine-row"><span>3m Honing Machine</span><span class="qty">×2</span></div>
+        <div class="machine-row"><span>2m Honing Machine</span><span class="qty">×1</span></div>
+        <div class="machine-row"><span>TIG Welding Machine</span><span class="qty">×2</span></div>
+        <div class="machine-row"><span>MIG Welding Machine</span><span class="qty">×1</span></div>
+        <div class="machine-row"><span>Hydraulic Test Rig 450 BAR</span><span class="qty">×1</span></div>
+        <div class="machine-row"><span>Thermal Spray Coating Machine</span><span class="qty">×1</span></div>
+        <div class="machine-row"><span>PolyUrea Coating Machine</span><span class="qty">×1</span></div>
+        <div class="machine-row"><span>14 Feet Lathe Machine</span><span class="qty">×1</span></div>
+        <div class="machine-row"><span>Bandsaw Cutting Machine</span><span class="qty">×3</span></div>
+      </div>
+      <div class="machine-table" style="margin-top:20px;">
+        <h3>🔬 Quality & Testing</h3>
+        <div class="machine-row"><span>Ultrasonic Thickness Gauge</span><span class="qty">✓</span></div>
+        <div class="machine-row"><span>Hardness Test Machine</span><span class="qty">✓</span></div>
+        <div class="machine-row"><span>Bore Gauges</span><span class="qty">×4</span></div>
+        <div class="machine-row"><span>Digital Vernier Calipers</span><span class="qty">×3</span></div>
+        <div class="machine-row"><span>Micrometers</span><span class="qty">×2</span></div>
+        <div class="machine-row"><span>Electronic Weighing 500kg</span><span class="qty">✓</span></div>
+        <div class="machine-row"><span>Hydraulic Test Rig 450 BAR</span><span class="qty">✓</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs">
+  <div class="section-header reveal" style="text-align:center;">
+    <div class="section-tag" style="display:inline-block;">Certifications</div>
+    <h2 class="section-title">Certified. <span style="color:var(--gold)">Patented.</span> Proven.</h2>
+    <div class="accent-line" style="margin:16px auto;"></div>
+    <p class="section-sub" style="margin:0 auto;">Validated by the Government of India across multiple regulatory and quality frameworks.</p>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card reveal">
+      <div class="cert-badge">🇮🇳</div>
+      <h3>Government of India Patent</h3>
+      <p>One of India's few defense SMEs to hold a Government patent. Granted for the invention of the Internal Hydraulic Telescopic Mast — a breakthrough in indigenous defense engineering.</p>
+      <span class="cert-number">Patent No. 373182 · Granted July 2021 · 20 Year Term</span>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-badge" style="background:linear-gradient(135deg,rgba(240,180,41,0.2),rgba(240,180,41,0.08));">✅</div>
+      <h3>ISO 9001:2015</h3>
+      <p>Quality Management System certified for the full lifecycle: Design, Engineering, Development, Manufacture and Servicing of all Telescopic Masts, SPMs and Hydraulic Equipment.</p>
+      <span class="cert-number">Cert No. Q91864141102 · HYM International Certifications</span>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-badge" style="background:linear-gradient(135deg,rgba(0,200,255,0.15),rgba(0,200,255,0.05));">🏛️</div>
+      <h3>Companies Act 2013</h3>
+      <p>Incorporated and registered under the Companies Act 2013 by the Ministry of Corporate Affairs, Government of India. Fully compliant with all statutory requirements.</p>
+      <span class="cert-number">CIN: U74900TG2014PTC095733 · GSTIN: 36AADCE7737N1Z3</span>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-header reveal">
+    <div class="section-tag">Leadership</div>
+    <h2 class="section-title">The <span style="color:var(--cyan)">Minds</span> Behind the Masts</h2>
+    <div class="accent-line"></div>
+    <p class="section-sub">IISc · XLRI · Tata Steel pedigree combined with deep defense manufacturing expertise. Hover to learn more.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-inner">
+        <div class="team-front">
+          <div class="team-avatar">VK</div>
+          <h3>N. Vijay Kumar</h3>
+          <p>Founder & Managing Director</p>
+        </div>
+        <div class="team-back">
+          <h3>N. Vijay Kumar</h3>
+          <p>20+ years in Marketing, Business Development & Finance. Patented inventor of the Internal Hydraulic Telescopic Mast — Patent No. 373182, Govt. of India.</p>
+        </div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-inner">
+        <div class="team-front">
+          <div class="team-avatar" style="background:linear-gradient(135deg,var(--gold2),var(--gold));">SM</div>
+          <h3>SR Murthy</h3>
+          <p>Head – Business Excellence</p>
+        </div>
+        <div class="team-back">
+          <h3>SR Murthy</h3>
+          <p>30+ years in Mechanical Engineering. With Excel Ardor since inception. Previously associated with leading industries in India for 15+ years.</p>
+        </div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-inner">
+        <div class="team-front">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#1a5c2a,#2d8c47);">GR</div>
+          <h3>G S Rao</h3>
+          <p>Director – Strategy & BD</p>
+        </div>
+        <div class="team-back">
+          <h3>G S Rao</h3>
+          <p>Post-graduate in Metallurgy from IISc Bengaluru. Former Tata Steel, Tata Group. 20 years in strategy & business development. Global industry exposure.</p>
+        </div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-inner">
+        <div class="team-front">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#5c1a5c,#8c2d8c);">SO</div>
+          <h3>S.R. Oruganti</h3>
+          <p>Head – Supply Chain Management</p>
+        </div>
+        <div class="team-back">
+          <h3>S.R. Oruganti</h3>
+          <p>Mechanical Engineering Graduate. MBA from XLRI — one of India's top B-schools. Nearly 30 years of industry experience in Supply Chain Management.</p>
+        </div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-inner">
+        <div class="team-front">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#1a4a5c,#2d7a8c);">PP</div>
+          <h3>P. Prasad</h3>
+          <p>Technical Consultant (Mech.)</p>
+        </div>
+        <div class="team-back">
+          <h3>P. Prasad</h3>
+          <p>Masters in Mechanical Engineering. 30 years of hands-on experience in Design, Manufacturing, Planning, Quality Control and Troubleshooting of complex systems.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section id="locations">
+  <div class="section-header reveal" style="text-align:center;">
+    <div class="section-tag" style="display:inline-block;">Locations</div>
+    <h2 class="section-title">Three Units. <span style="color:var(--cyan)">One Mission.</span></h2>
+    <div class="accent-line" style="margin:16px auto;"></div>
+    <p class="section-sub" style="margin:0 auto;">Strategically located across Hyderabad, Telangana — the heart of India's defense manufacturing corridor.</p>
+  </div>
+  <div class="loc-grid">
+    <div class="loc-card reveal">
+      <div class="loc-pin">📍</div>
+      <div class="loc-unit">Unit 1</div>
+      <h3>Erragadda, Hyderabad</h3>
+      <p>7-2-1852/1/E, Fathebagh, Near Victory Garden, Erragadda, Hyderabad, Telangana – 500 018</p>
+    </div>
+    <div class="loc-card reveal" style="border-color:rgba(0,200,255,0.25);">
+      <div class="loc-pin">🏭</div>
+      <div class="loc-unit" style="color:var(--gold);">Unit 2 — ISO Registered Main Office</div>
+      <h3>Balanagar, Hyderabad</h3>
+      <p>A30, APIE, Beside Allahabad Bank Lane, Balanagar, Hyderabad, Telangana – 500 037</p>
+    </div>
+    <div class="loc-card reveal">
+      <div class="loc-pin">🏗️</div>
+      <div class="loc-unit">Unit 3</div>
+      <h3>Patancheru, Sangareddy</h3>
+      <p>Plot No. 19 B/6, IDA Phase II, Patancheru, Sangareddy, Telangana – 502 319</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-info reveal-left">
+      <div class="section-tag">Contact Us</div>
+      <h2 class="section-title">Let's Build India's <span style="color:var(--cyan)">Defense Future</span> Together</h2>
+      <div class="accent-line"></div>
+      <p>Whether you represent a defense organization, PSU, or private industry — our engineering team is ready to deliver precision mast systems and aerospace components tailored exactly to your requirements.</p>
+      <div class="contact-detail">
+        <div class="c-icon-box">📧</div>
+        <div><h4>Email Us</h4><p>info@excelardor.com | excelardor@gmail.com</p></div>
+      </div>
+      <div class="contact-detail">
+        <div class="c-icon-box">📞</div>
+        <div><h4>Call Us</h4><p>+91 40 23800049 | +91 9989166874</p></div>
+      </div>
+      <div class="contact-detail">
+        <div class="c-icon-box">🌐</div>
+        <div><h4>Website</h4><p>www.excelardor.com</p></div>
+      </div>
+      <div class="contact-detail">
+        <div class="c-icon-box">📍</div>
+        <div><h4>Main Office</h4><p>A30, APIE, Balanagar, Hyderabad – 500 037, Telangana</p></div>
+      </div>
+    </div>
+    <div class="contact-form reveal-right">
+      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:24px;">Send an Enquiry</h3>
+      <div class="form-row">
+        <label>Your Name</label>
+        <input type="text" placeholder="Full Name" />
+      </div>
+      <div class="form-row">
+        <label>Organisation</label>
+        <input type="text" placeholder="Company / Organisation" />
+      </div>
+      <div class="form-row">
+        <label>Product Interest</label>
+        <select>
+          <option value="">Select a Product Category</option>
+          <option>Pneumatic Telescopic Mast</option>
+          <option>Hydraulic Telescopic Mast</option>
+          <option>Electromechanical Mast</option>
+          <option>Vehicle Mounted Mast</option>
+          <option>Aerospace & Pyro Components</option>
+          <option>Hydraulic Cylinders & Power Packs</option>
+          <option>Special Purpose Machine</option>
+          <option>Material Handling System</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Email Address</label>
+        <input type="email" placeholder="your@email.com" />
+      </div>
+      <div class="form-row">
+        <label>Your Message</label>
+        <textarea placeholder="Describe your requirements, quantities, or any questions..."></textarea>
+      </div>
+      <button class="submit-btn" id="submitBtn">Send Enquiry →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">EXCEL <span>ARDOR</span></div>
+      <p>India's premier manufacturer of Telescopic Masts — pneumatic, hydraulic and electromechanical — and precision aerospace components. Incorporated 2014, Hyderabad. Serving DRDO, BEL, the Indian Navy and more.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#products">Pneumatic Masts</a></li>
+        <li><a href="#products">Hydraulic Masts</a></li>
+        <li><a href="#products">Electromechanical Masts</a></li>
+        <li><a href="#products">Light Weight Masts</a></li>
+        <li><a href="#products">Heavy Duty Masts</a></li>
+        <li><a href="#products">Aerospace Components</a></li>
+        <li><a href="#products">Pyro Components</a></li>
+        <li><a href="#products">Composite Sections</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#clients">Our Clients</a></li>
+        <li><a href="#capabilities">Capabilities</a></li>
+        <li><a href="#certs">Certifications</a></li>
+        <li><a href="#team">Leadership</a></li>
+        <li><a href="#locations">Locations</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 <span>Excel Ardor Private Limited</span>. All Rights Reserved. Made in India 🇮🇳</span>
+    <span>CIN: U74900TG2014PTC095733 · ISO 9001:2015 · Patent No. 373182</span>
+  </div>
+</footer>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// PARTICLES
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W; this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4;
+    this.r = Math.random() * 1.5 + 0.3;
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.color = Math.random() > 0.5 ? '0,200,255' : '240,180,41';
+  }
+  update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset(); }
+  draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(${this.color},${this.alpha})`; ctx.fill(); }
+}
+for (let i = 0; i < 130; i++) particles.push(new Particle());
+function drawLines() {
+  for (let i = 0; i < particles.length; i++) for (let j = i + 1; j < particles.length; j++) {
+    const d = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+    if (d < 120) { ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.strokeStyle = `rgba(0,200,255,${0.08 * (1 - d / 120)})`; ctx.lineWidth = 0.5; ctx.stroke(); }
+  }
+}
+(function loop() { ctx.clearRect(0, 0, W, H); particles.forEach(p => { p.update(); p.draw(); }); drawLines(); requestAnimationFrame(loop); })();
+
+// NAVBAR
+const navbar = document.getElementById('navbar');
+const scrollTopBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+  scrollTopBtn.classList.toggle('show', window.scrollY > 400);
+});
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.12 });
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .timeline-item').forEach(el => observer.observe(el));
+
+// COUNTER
+const cObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.done) {
+      e.target.dataset.done = '1';
+      const target = +e.target.dataset.target, step = Math.ceil(target / 50);
+      let count = 0;
+      const t = setInterval(() => { count = Math.min(count + step, target); e.target.textContent = count + '+'; if (count >= target) clearInterval(t); }, 35);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num').forEach(el => cObs.observe(el));
+
+// 3D TILT
+document.querySelectorAll('.product-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 16;
+    const y = ((e.clientY - r.top) / r.height - 0.5) * -16;
+    card.style.transform = `perspective(700px) rotateY(${x}deg) rotateX(${y}deg) translateY(-8px)`;
+  });
+  card.addEventListener('mouseleave', () => card.style.transform = '');
+});
+
+// FORM SUBMIT
+document.getElementById('submitBtn').addEventListener('click', function (e) {
+  e.preventDefault();
+  this.textContent = '✓ Enquiry Sent Successfully!';
+  this.style.background = 'linear-gradient(135deg,#1a8c4a,#2dc46e)';
+  setTimeout(() => { this.textContent = 'Send Enquiry →'; this.style.background = ''; }, 3500);
+});
+</script>
+</body>
+</html>
