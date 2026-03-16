@@ -61,17 +61,24 @@ img { max-width: 100%; }
 .nav-cta:hover { background: var(--blue); transform: translateY(-1px); }
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
 .hamburger span { width: 22px; height: 2px; background: var(--navy); border-radius: 2px; }
+.mobile-menu { display: none; }
 
 /* ===== HERO ===== */
 .hero {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   align-items: center;
   padding: 100px 0 40px;
   position: relative;
   overflow: hidden;
   background: var(--white);
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+  z-index: 2;
 }
 /* Dot grid background */
 .hero::before {
@@ -538,7 +545,8 @@ section { padding: 96px 0; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 960px) {
-  .hero { grid-template-columns: 1fr; text-align: center; }
+  .hero { text-align: center; }
+  .hero-inner { grid-template-columns: 1fr; }
   .hero-sub, .hero-btns, .hero-trust { max-width: 100%; justify-content: center; }
   .hero-left { padding-right: 0; }
   .hero-right { display: none; }
@@ -551,7 +559,22 @@ section { padding: 96px 0; }
   .certs-grid, .team-grid, .loc-grid { grid-template-columns: 1fr 1fr; }
   .team-card.wide { grid-column: span 2; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
-  .nav-links { display: none; }
+  
+  /* Mobile Nav */
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; z-index: 1100; }
+  .mobile-menu {
+    position: fixed; inset: 0; background: var(--white); z-index: 1050;
+    flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+  }
+  .mobile-menu.active { transform: translateX(0); }
+  .mobile-menu a {
+    font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800;
+    color: var(--navy); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .mobile-menu a:hover { color: var(--blue); }
 }
 @media (max-width: 600px) {
   section { padding: 64px 0; }
@@ -580,12 +603,27 @@ section { padding: 96px 0; }
       <li><a href="#contact">Contact</a></li>
     </ul>
     <a href="#contact" class="nav-cta">Get in Touch</a>
+    
+    <!-- Mobile Toggle -->
+    <div class="hamburger" id="navToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" class="m-link">About</a>
+    <a href="#products" class="m-link">Products</a>
+    <a href="#clients" class="m-link">Clients</a>
+    <a href="#capabilities" class="m-link">Capabilities</a>
+    <a href="#leadership" class="m-link">Leadership</a>
+    <a href="#contact" class="m-link">Contact</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;position:relative;z-index:2;">
+  <div class="container hero-inner">
     <div class="hero-left">
       <div class="hero-badge"><span class="badge-dot"></span>Govt. of India Patent No. 373182</div>
       <h1>INDIA'S <span class="accent">PRECISION</span><br>FORCE IN<br><span class="gold">TELESCOPIC</span><br>MAST SYSTEMS.</h1>
@@ -767,22 +805,22 @@ section { padding: 96px 0; }
       </div>
       <div class="about-highlights">
         <div class="hl-box">
-          <div class="hl-icon">🏅</div>
+          <div class="hl-icon"><i class="ph-fill ph-award"></i></div>
           <h4>Govt. Patent No. 373182</h4>
           <p>Internal Hydraulic Telescopic Mast — 20-year exclusive term since 2021</p>
         </div>
         <div class="hl-box">
-          <div class="hl-icon">✅</div>
+          <div class="hl-icon"><i class="ph-fill ph-seal-check"></i></div>
           <h4>ISO 9001:2015 Certified</h4>
           <p>Cert No. Q91864141102 — Full design-to-service quality management</p>
         </div>
         <div class="hl-box">
-          <div class="hl-icon">🏭</div>
+          <div class="hl-icon"><i class="ph-fill ph-factory"></i></div>
           <h4>3 Manufacturing Units</h4>
           <p>Erragadda, Balanagar & Patancheru — across Hyderabad, Telangana</p>
         </div>
         <div class="hl-box">
-          <div class="hl-icon">🛡️</div>
+          <div class="hl-icon"><i class="ph-fill ph-shield-check"></i></div>
           <h4>Defense Aerospace Focus</h4>
           <p>Serving DRDO, BEL, Indian Navy, NFC and critical PSUs since inception</p>
         </div>
@@ -1028,35 +1066,35 @@ section { padding: 96px 0; }
           </div>
         </div>
         <div class="cap-item reveal">
-          <div class="cap-item-icon">🔩</div>
+          <div class="cap-item-icon"><i class="ph-fill ph-nut"></i></div>
           <div>
             <h4>Advanced Honing — Up to 6 Metres</h4>
             <p>6m, 4m Vertical, 3m and 2m honing machines for perfect bore finishing across all mast cylinders and hydraulic assemblies.</p>
           </div>
         </div>
         <div class="cap-item reveal">
-          <div class="cap-item-icon">🔥</div>
+          <div class="cap-item-icon"><i class="ph-fill ph-fire"></i></div>
           <div>
             <h4>TIG / MIG / Arc Welding</h4>
             <p>Full structural welding capabilities — TIG (×2), MIG (×1), Arc (×2) — ensuring complete structural integrity to defense standards.</p>
           </div>
         </div>
         <div class="cap-item reveal">
-          <div class="cap-item-icon">💧</div>
+          <div class="cap-item-icon"><i class="ph-fill ph-drop"></i></div>
           <div>
             <h4>Hydraulic Test Rig — 450 BAR</h4>
             <p>In-house high-pressure test rig validates every hydraulic mast and power pack before delivery. Zero compromise on safety.</p>
           </div>
         </div>
         <div class="cap-item reveal">
-          <div class="cap-item-icon">🛡️</div>
+          <div class="cap-item-icon"><i class="ph-fill ph-shield-check"></i></div>
           <div>
             <h4>Thermal Spray &amp; PolyUrea Coating</h4>
             <p>Advanced surface protection systems for corrosion resistance and extended service life in harsh field and coastal environments.</p>
           </div>
         </div>
         <div class="cap-item reveal">
-          <div class="cap-item-icon">📏</div>
+          <div class="cap-item-icon"><i class="ph-fill ph-ruler"></i></div>
           <div>
             <h4>Precision Quality Testing</h4>
             <p>Bore gauges, Ultrasonic thickness gauge, Digital Verniers, Hardness Test Machine, Surface Table, Micrometers — complete quality control.</p>
@@ -1124,21 +1162,21 @@ section { padding: 96px 0; }
 
     <div class="certs-grid">
       <div class="cert-card reveal">
-        <div class="cert-badge gold">🏅</div>
+        <div class="cert-badge gold"><i class="ph-fill ph-award"></i></div>
         <h3>Government of India Patent</h3>
         <p>Patent granted for the invention titled <strong>Internal Hydraulic Telescopic Mast</strong>. A major milestone in indigenous defense engineering innovation.</p>
         <span class="cert-num gold">Patent No. 373182 • Granted 29/07/2021</span>
       </div>
 
       <div class="cert-card reveal">
-        <div class="cert-badge">✅</div>
+        <div class="cert-badge"><i class="ph-fill ph-seal-check"></i></div>
         <h3>ISO 9001:2015</h3>
         <p>Certified for design, engineering, development, manufacture and servicing of all types of telescopic masts, special purpose machines and hydraulic equipment.</p>
         <span class="cert-num">Cert No. Q91864141102</span>
       </div>
 
       <div class="cert-card reveal">
-        <div class="cert-badge">📄</div>
+        <div class="cert-badge"><i class="ph-fill ph-file-text"></i></div>
         <h3>ROC, GST & PAN</h3>
         <p>Registered under the Companies Act, 2013 with full statutory compliance, including CIN, GSTIN and PAN documentation for business operations.</p>
         <span class="cert-num">CIN U74900TG2014PTC095733</span>
@@ -1224,21 +1262,21 @@ section { padding: 96px 0; }
 
     <div class="loc-grid">
       <div class="loc-card reveal">
-        <div class="loc-pin">📍</div>
+        <div class="loc-pin"><i class="ph-fill ph-map-pin"></i></div>
         <div class="loc-unit">Unit 1</div>
         <h3>Erragadda, Hyderabad</h3>
         <p>7-2-1852/1/E, Fathebagh, Near Victory Garden, Erragadda, Hyderabad, Telangana - 18</p>
       </div>
 
       <div class="loc-card main reveal">
-        <div class="loc-pin">🏢</div>
+        <div class="loc-pin"><i class="ph-fill ph-buildings"></i></div>
         <div class="loc-unit">Unit 2 — Main Office</div>
         <h3>Balanagar, Hyderabad</h3>
         <p>A30, APIE, Beside Allahabad Bank Lane, Balanagar, Hyderabad, Telangana - 37</p>
       </div>
 
       <div class="loc-card reveal">
-        <div class="loc-pin">🏭</div>
+        <div class="loc-pin"><i class="ph-fill ph-factory"></i></div>
         <div class="loc-unit">Unit 3</div>
         <h3>Patancheru, Sangareddy</h3>
         <p>Plot No. 19 B/6, IDA, Phase II, Patancheru, Sangareddy, Telangana - 502319</p>
@@ -1457,6 +1495,30 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     window.scrollTo({ top, behavior: 'smooth' });
   });
 });
+
+// Mobile Menu Toggle logic
+const navToggle = document.getElementById('navToggle');
+const mMenu = document.getElementById('mobileMenu');
+const mLinks = document.querySelectorAll('.m-link');
+let isMenuOpen = false;
+
+function toggleMenu() {
+  isMenuOpen = !isMenuOpen;
+  if(isMenuOpen) {
+    mMenu.classList.add('active');
+    // Animate hamburger to X
+    gsap.to(navToggle.children[0], { rotation: 45, y: 7 });
+    gsap.to(navToggle.children[1], { opacity: 0 });
+    gsap.to(navToggle.children[2], { rotation: -45, y: -7 });
+  } else {
+    mMenu.classList.remove('active');
+    // Reset hamburger
+    gsap.to(navToggle.children, { rotation: 0, y: 0, opacity: 1 });
+  }
+}
+
+if(navToggle) navToggle.addEventListener('click', toggleMenu);
+mLinks.forEach(l => l.addEventListener('click', toggleMenu));
 </script>
 
 </body>
