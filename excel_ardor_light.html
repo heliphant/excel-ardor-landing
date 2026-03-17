@@ -411,65 +411,17 @@
                             <!-- MAST ASSEMBLY (Centered) -->
                             <g id="mast-assembly" transform="translate(200, 480)">
                                 
-                                <!-- BASE UNIT (Improved) -->
-                                <g id="base-unit">
-                                    <!-- Mounting Feet -->
-                                    <path d="M-70 0 L70 0 L80 15 L-80 15 Z" fill="#334155" />
-                                    <rect x="-75" y="5" width="10" height="5" rx="1" fill="#cbd5e1" /> <!-- Bolt -->
-                                    <rect x="65" y="5" width="10" height="5" rx="1" fill="#cbd5e1" /> <!-- Bolt -->
-                                    
-                                    <!-- Main Housing -->
-                                    <path d="M-55 -90 L-55 0 L55 0 L55 -90 Z" fill="url(#base-grad-3d)" />
-                                    <!-- Vertical Ridges for rugged look -->
-                                    <rect x="-45" y="-80" width="10" height="70" fill="rgba(0,0,0,0.2)" />
-                                    <rect x="35" y="-80" width="10" height="70" fill="rgba(0,0,0,0.2)" />
-                                    
-                                    <!-- Top Rim -->
-                                    <ellipse cx="0" cy="-90" rx="55" ry="12" fill="url(#tactical-black)" stroke="#334155" stroke-width="0.5" />
-                                    <text x="0" y="-35" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif" letter-spacing="1">SERIES-H</text>
-                                </g>
-
                                 <!-- TELESCOPIC STAGES -->
-                                
                                 <!-- STAGE 1 (Bottom Stage) -->
                                 <g id="stage-1" transform="translate(0, -90)">
-                                    <!-- Tube Body -->
-                                    <path d="M-45 -130 L-45 15 L45 15 L45 -130 Z" fill="url(#cylinder-grad)" />
-                                    <!-- Vertical Seam/Detail line -->
-                                    <line x1="20" y1="-120" x2="20" y2="10" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
                                     
-                                    <!-- Locking Collar 1 -->
-                                    <g transform="translate(0, -130)">
-                                        <path d="M-48 0 L-48 15 L48 15 L48 0 Z" fill="url(#tactical-black)" />
-                                        <ellipse cx="0" cy="15" rx="48" ry="10" fill="url(#tactical-black)" />
-                                        <ellipse cx="0" cy="0" rx="48" ry="10" fill="url(#tactical-black)" stroke="#64748b" stroke-width="0.5" />
-                                        <!-- Locking Bolts -->
-                                        <circle cx="-35" cy="8" r="2" fill="#94a3b8" />
-                                        <circle cx="0" cy="12" r="2" fill="#94a3b8" />
-                                        <circle cx="35" cy="8" r="2" fill="#94a3b8" />
-                                        <!-- Top Cap/Hole -->
-                                        <ellipse cx="0" cy="0" rx="45" ry="9" fill="#1e293b" />
-                                    </g>
-
                                     <!-- STAGE 2 (Middle Stage) -->
                                     <g id="stage-2" transform="translate(0, -130)">
-                                        <!-- Tube Body -->
-                                        <path d="M-35 -120 L-35 15 L35 15 L35 -120 Z" fill="url(#cylinder-grad)" />
-                                        
-                                        <!-- Locking Collar 2 -->
-                                        <g transform="translate(0, -120)">
-                                            <path d="M-38 0 L-38 12 L38 12 L38 0 Z" fill="url(#tactical-black)" />
-                                            <ellipse cx="0" cy="12" rx="38" ry="8" fill="url(#tactical-black)" />
-                                            <ellipse cx="0" cy="0" rx="38" ry="8" fill="url(#tactical-black)" stroke="#64748b" stroke-width="0.5" />
-                                            <!-- Details -->
-                                            <rect x="-10" y="4" width="20" height="4" fill="#64748b" rx="1" />
-                                            <!-- Top Cap/Hole -->
-                                            <ellipse cx="0" cy="0" rx="35" ry="7" fill="#1e293b" />
-                                        </g>
 
                                         <!-- STAGE 3 (Top Stage) -->
                                         <g id="stage-3" transform="translate(0, -120)">
-                                            <!-- Tube Body -->
+                                            
+                                            <!-- Tube Body (Stage 3) -->
                                             <path d="M-25 -100 L-25 10 L25 10 L25 -100 Z" fill="url(#cylinder-grad)" />
                                             <!-- Caution Label -->
                                             <rect x="-10" y="-80" width="20" height="40" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="1" />
@@ -500,7 +452,57 @@
                                                 </g>
                                             </g>
                                         </g>
+
+                                        <!-- Tube Body (Stage 2) -->
+                                        <path d="M-35 -120 L-35 15 L35 15 L35 -120 Z" fill="url(#cylinder-grad)" />
+                                        
+                                        <!-- Locking Collar 2 -->
+                                        <g transform="translate(0, -120)">
+                                            <path d="M-38 0 L-38 12 L38 12 L38 0 Z" fill="url(#tactical-black)" />
+                                            <ellipse cx="0" cy="12" rx="38" ry="8" fill="url(#tactical-black)" />
+                                            <ellipse cx="0" cy="0" rx="38" ry="8" fill="url(#tactical-black)" stroke="#64748b" stroke-width="0.5" />
+                                            <!-- Details -->
+                                            <rect x="-10" y="4" width="20" height="4" fill="#64748b" rx="1" />
+                                            <!-- Top Cap/Hole -->
+                                            <ellipse cx="0" cy="0" rx="35" ry="7" fill="#1e293b" />
+                                        </g>
                                     </g>
+
+                                    <!-- Tube Body (Stage 1) -->
+                                    <path d="M-45 -130 L-45 15 L45 15 L45 -130 Z" fill="url(#cylinder-grad)" />
+                                    <!-- Vertical Seam/Detail line -->
+                                    <line x1="20" y1="-120" x2="20" y2="10" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                                    
+                                    <!-- Locking Collar 1 -->
+                                    <g transform="translate(0, -130)">
+                                        <path d="M-48 0 L-48 15 L48 15 L48 0 Z" fill="url(#tactical-black)" />
+                                        <ellipse cx="0" cy="15" rx="48" ry="10" fill="url(#tactical-black)" />
+                                        <ellipse cx="0" cy="0" rx="48" ry="10" fill="url(#tactical-black)" stroke="#64748b" stroke-width="0.5" />
+                                        <!-- Locking Bolts -->
+                                        <circle cx="-35" cy="8" r="2" fill="#94a3b8" />
+                                        <circle cx="0" cy="12" r="2" fill="#94a3b8" />
+                                        <circle cx="35" cy="8" r="2" fill="#94a3b8" />
+                                        <!-- Top Cap/Hole -->
+                                        <ellipse cx="0" cy="0" rx="45" ry="9" fill="#1e293b" />
+                                    </g>
+                                </g>
+
+                                <!-- BASE UNIT (Drawn last -> Highest Z-index) -->
+                                <g id="base-unit">
+                                    <!-- Mounting Feet -->
+                                    <path d="M-70 0 L70 0 L80 15 L-80 15 Z" fill="#334155" />
+                                    <rect x="-75" y="5" width="10" height="5" rx="1" fill="#cbd5e1" /> <!-- Bolt -->
+                                    <rect x="65" y="5" width="10" height="5" rx="1" fill="#cbd5e1" /> <!-- Bolt -->
+                                    
+                                    <!-- Main Housing -->
+                                    <path d="M-55 -90 L-55 0 L55 0 L55 -90 Z" fill="url(#base-grad-3d)" />
+                                    <!-- Vertical Ridges for rugged look -->
+                                    <rect x="-45" y="-80" width="10" height="70" fill="rgba(0,0,0,0.2)" />
+                                    <rect x="35" y="-80" width="10" height="70" fill="rgba(0,0,0,0.2)" />
+                                    
+                                    <!-- Top Rim -->
+                                    <ellipse cx="0" cy="-90" rx="55" ry="12" fill="url(#tactical-black)" stroke="#334155" stroke-width="0.5" />
+                                    <text x="0" y="-35" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif" letter-spacing="1">SERIES-H</text>
                                 </g>
                             </g>
                         </svg>
@@ -1097,27 +1099,29 @@
         // Clear any previous settings before redefining
         tl.clear();
 
-        // 0. Setup
-        tl.set(["#stage-1", "#stage-2", "#stage-3"], { y: 10 }); // Start slightly tucked
+        // 0. Setup (Tucked Positions)
+        tl.set("#stage-1", { y: -15 }); 
+        tl.set("#stage-2", { y: -10 }); 
+        tl.set("#stage-3", { y: -20 });
         
         // Animation Sequence (Extension)
         // 1. Extend Stage 1
         tl.to("#stage-1", { 
-            y: -80, 
+            y: -90, 
             duration: 1.5, 
             ease: "power3.inOut" 
         });
         
         // 2. Extend Stage 2
         tl.to("#stage-2", { 
-            y: -120, 
+            y: -130, 
             duration: 1.5, 
             ease: "power3.inOut" 
         }, "-=1.0"); 
         
         // 3. Extend Stage 3
         tl.to("#stage-3", { 
-            y: -110, 
+            y: -120, 
             duration: 1.5, 
             ease: "power3.inOut" 
         }, "-=1.0");
